@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "packages/renderer/test-apps/*"
+    "packages/renderer/test-apps/*",
+    "packages/editor/test-app"
   ],
   "scripts": {
     "test": "bun test --recursive",
