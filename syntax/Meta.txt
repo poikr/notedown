@@ -1,0 +1,93 @@
+Meta
+
+이 문서는 Meta 문법에 대한 구문을 설명합니다.
+
+Meta는 문서의 메타데이터를 정의하고, 문서 내에서 그 값을 참조할 수 있는 기능입니다.
+
+1. 기본 Meta 정의
+
+Meta는 반드시 문서의 최상단에 위치해야 합니다. @meta 키워드와 key=value 형태로 정의합니다.
+예시:
+@meta title=마이 블로그
+@meta author=홍길동
+@meta date=2026-02-12
+
+문서의 나머지 내용
+이것은 일반적인 문서 콘텐츠입니다.
+
+2. Meta 값 참조
+
+문서 내에서 @{key} 형태를 사용하여 정의된 meta 값을 불러올 수 있습니다.
+예시:
+@meta title=내 첫 번째 글
+@meta author=김철수
+
+# @{title}
+
+작성자: @{author}
+
+이 글은 @{author}가 작성했습니다.
+
+3. 다중 Meta
+
+여러 개의 meta를 한 번에 정의할 수 있습니다.
+예시:
+@meta title=프로젝트 문서
+@meta version=1.0
+@meta language=ko
+@meta status=완성
+
+문서 내용...
+
+4. 글 중간의 Meta 처럼 보이는 텍스트
+
+문서 내용 중간에 meta 구문처럼 보이는 텍스트가 있으면 일반 텍스트로 취급됩니다.
+예시:
+@meta title=메인 제목
+
+이것은 일반 텍스트입니다.
+@meta 이것은 일반 텍스트입니다. (meta로 취급되지 않음)
+
+더 많은 내용...
+
+5. 최상단에서 Meta 같은 텍스트 작성
+
+문서 최상단에서 meta 구문처럼 보이는 일반 텍스트를 쓰고 싶을 경우, 백슬래시로 이스케이프합니다.
+예시:
+\@meta 이것은 일반 텍스트입니다.
+\@meta 다른 일반 텍스트입니다.
+
+이것이 문서의 첫 번째 내용입니다.
+
+6. Meta 활용 예제
+
+블로그 포스트:
+@meta title=마크다운 가이드
+@meta author=이영희
+@meta date=2026-02-12
+@meta tags=markdown, tutorial
+
+# @{title}
+
+**작성자**: @{author}
+**작성일**: @{date}
+
+이 글에서는 @{title}에 대해 설명합니다.
+
+프로젝트 문서:
+@meta project=notedown
+@meta version=2.0
+@meta status=개발중
+
+# @{project} v@{version}
+
+프로젝트 상태: @{status}
+
+프로젝트에 대한 상세 설명...
+
+7. 주의 사항
+
+Meta는 반드시 문서의 맨 앞에 위치해야 합니다.
+Meta 정의가 끝나면 일반 콘텐츠가 시작됩니다.
+일단 일반 콘텐츠가 시작되면 그 이후의 @meta 구문은 모두 일반 텍스트로 취급됩니다.
+이스케이프 된 \@meta는 문서 최상단에서만 효과가 있습니다.
