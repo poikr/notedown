@@ -171,10 +171,13 @@ describe("HTML Output", () => {
       expect(html).toContain("nd-codeblock-copy");
     });
 
-    it("renders iframe code block", () => {
+    it("renders iframe code block with trust prompt", () => {
       const html = notedownToHtml("```iframe\n<div>Hello</div>\n```");
-      expect(html).toContain("<iframe");
-      expect(html).toContain("srcdoc=");
+      expect(html).toContain("nd-iframe-trust");
+      expect(html).toContain("nd-iframe-trust-btn");
+      expect(html).toContain("Trust &amp; Run Code");
+      expect(html).toContain("nd-iframe-trust-preview");
+      expect(html).toContain("&lt;div&gt;Hello&lt;/div&gt;");
     });
   });
 
