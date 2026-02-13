@@ -1,5 +1,6 @@
 import { describe, it, expect } from "bun:test";
 import { parse } from "../src/index";
+import { assertHeading } from "./test-helpers";
 
 describe("Heading Parser", () => {
   it("parses H1", () => {
@@ -8,7 +9,7 @@ describe("Heading Parser", () => {
       type: "heading",
       level: 1,
     });
-    const heading = doc.content[0] as any;
+    const heading = assertHeading(doc.content[0]);
     expect(heading.children[0]).toMatchObject({ type: "text", value: "Hello World" });
   });
 
@@ -25,14 +26,14 @@ describe("Heading Parser", () => {
 
   it("parses heading with inline decorations", () => {
     const doc = parse("# **Bold** Heading");
-    const heading = doc.content[0] as any;
+    const heading = assertHeading(doc.content[0]);
     expect(heading.children.length).toBeGreaterThan(1);
     expect(heading.children[0]).toMatchObject({ type: "bold" });
   });
 
   it("parses heading with meta reference", () => {
     const doc = parse("@meta title=My Title\n\n# @{title}");
-    const heading = doc.content[0] as any;
+    const heading = assertHeading(doc.content[0]);
     expect(heading.children[0]).toMatchObject({ type: "metaRef", key: "title" });
   });
 });

@@ -1,5 +1,6 @@
 import { describe, it, expect } from "bun:test";
 import { parse } from "../src/index";
+import { assertCodeBlock } from "./test-helpers";
 
 describe("Code Block Parser", () => {
   it("parses code block with language", () => {
@@ -32,7 +33,7 @@ describe("Code Block Parser", () => {
 
   it("preserves whitespace and special characters", () => {
     const doc = parse("```\n  indented\n    more indented\n  **not bold**\n```");
-    const block = doc.content[0] as any;
+    const block = assertCodeBlock(doc.content[0]);
     expect(block.content).toBe("  indented\n    more indented\n  **not bold**");
   });
 
@@ -118,7 +119,7 @@ describe("Code Block Parser", () => {
 
   it("ignores props for non-iframe code blocks", () => {
     const doc = parse('```javascript,w#300px\nconsole.log("test");\n```');
-    const block = doc.content[0] as any;
+    const block = assertCodeBlock(doc.content[0]);
     expect(block.iframeWidth).toBeUndefined();
     expect(block.iframeHeight).toBeUndefined();
     expect(block.iframeResizable).toBeUndefined();

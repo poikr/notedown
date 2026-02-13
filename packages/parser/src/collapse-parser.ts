@@ -6,23 +6,17 @@ interface CollapseFrame {
   children: BlockNode[];
 }
 
-// Forward declarations for block parsing functions used inside collapse
-// These are injected via the parseBlocks dependency to avoid circular imports
-let _parseBlocksInContext: ((lines: string[], startIndex: number, stopAtCollapse: boolean) => {
+export type ParseBlocksFn = (lines: string[], startIndex: number, stopAtCollapse: boolean) => {
   nodes: BlockNode[];
   nextIndex: number;
-}) | null = null;
+};
 
-export function setBlockParserForCollapse(
-  fn: (lines: string[], startIndex: number, stopAtCollapse: boolean) => {
-    nodes: BlockNode[];
-    nextIndex: number;
-  }
-) {
-  _parseBlocksInContext = fn;
-}
-
-export function parseCollapseBlock(lines: string[], startIndex: number, lineNumber: number): {
+export function parseCollapseBlock(
+  lines: string[],
+  startIndex: number,
+  lineNumber: number,
+  parseBlocksInContext: ParseBlocksFn,
+): {
   node: CollapseNode;
   nextIndex: number;
 } {
@@ -67,23 +61,10 @@ export function parseCollapseBlock(lines: string[], startIndex: number, lineNumb
     }
 
     // Regular content: parse as blocks until next collapse marker
-    if (_parseBlocksInContext) {
-      const result = _parseBlocksInContext(lines, i, true);
-      const currentFrame = stack[stack.length - 1];
-      currentFrame.children.push(...result.nodes);
-      i = result.nextIndex;
-    } else {
-      // Fallback: treat as paragraph text
-      const currentFrame = stack[stack.length - 1];
-      if (line.trim().length > 0) {
-        currentFrame.children.push({
-          type: "paragraph",
-          children: parseInline(line),
-          line: i + 1,
-        });
-      }
-      i++;
-    }
+    const result = parseBlocksInContext(lines, i, true);
+    const currentFrame = stack[stack.length - 1];
+    currentFrame.children.push(...result.nodes);
+    i = result.nextIndex;
   }
 
   // Close any unclosed collapses gracefully

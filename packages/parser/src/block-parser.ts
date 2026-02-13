@@ -12,11 +12,7 @@ import {
   parseCollapseBlock,
   isCollapseStart,
   isCollapseEnd,
-  setBlockParserForCollapse,
 } from "./collapse-parser";
-
-// Register block parser for collapse context
-setBlockParserForCollapse(parseBlocksInContext);
 
 export function parseBlocks(lines: string[]): BlockNode[] {
   const result = parseBlocksInContext(lines, 0, false);
@@ -55,7 +51,7 @@ function parseBlocksInContext(
 
     // 2. Collapse start: starts with |>
     if (isCollapseStart(line)) {
-      const result = parseCollapseBlock(lines, i, i + 1);
+      const result = parseCollapseBlock(lines, i, i + 1, parseBlocksInContext);
       nodes.push(result.node);
       i = result.nextIndex;
       continue;

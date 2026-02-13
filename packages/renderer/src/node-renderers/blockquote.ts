@@ -1,5 +1,6 @@
 import type { BlockquoteNode, BlockNode, InlineNode } from "@notedown/parser";
 import { escapeHtml, escapeHtmlAttr } from "../sanitize";
+import { resolveThemedColor, type ThemeSetting } from "../theme-utils";
 
 const ICON_MAP: Record<string, string> = {
   question: "help",
@@ -9,23 +10,13 @@ export function renderBlockquote(
   node: BlockquoteNode,
   renderBlock: (node: BlockNode) => string,
   renderChildren: (nodes: InlineNode[]) => string,
-  theme: "light" | "dark" | "auto" = "light",
+  theme: ThemeSetting = "light",
 ): string {
   const materialIcon = node.icon ? (ICON_MAP[node.icon] ?? node.icon) : null;
 
-  // Determine which color to use based on theme
-  let customColor: string | null = null;
-  if (node.color && node.colorDark) {
-    if (theme === "auto") {
-      // For auto theme, we'll use CSS custom properties
-      customColor = null; // Will be handled separately
-    } else {
-      customColor = theme === "dark" ? node.colorDark : node.color;
-    }
-  } else {
-    // If only one is specified, use it for all themes
-    customColor = node.color || node.colorDark;
-  }
+  // Resolve color based on theme
+  const resolved = resolveThemedColor(node.color, node.colorDark, theme);
+  const customColor = resolved.mode === "static" ? resolved.value : null;
 
   // Build icon HTML
   let headerHtml = "";
@@ -55,26 +46,26 @@ export function renderBlockquote(
 
   // Build inline style for custom color
   let inlineStyle = "";
-  if (theme === "auto" && node.color && node.colorDark) {
+  if (resolved.mode === "auto") {
     // For auto theme with both colors, use CSS custom properties
-    const lightColor = node.color;
-    const darkColor = node.colorDark;
+    const lightColor = escapeHtmlAttr(resolved.lightValue!);
+    const darkColor = escapeHtmlAttr(resolved.darkValue!);
     const lightMix = `color-mix(in srgb, ${lightColor} 10%, #f1f1f1)`;
     const darkMix = `color-mix(in srgb, ${darkColor} 10%, #1e1e1e)`;
 
-    inlineStyle = ` class="${cls} nd-blockquote-auto" style="--nd-bq-border-light:${escapeHtmlAttr(lightColor)};--nd-bq-border-dark:${escapeHtmlAttr(darkColor)};--nd-bq-bg-light:${escapeHtmlAttr(lightMix)};--nd-bq-bg-dark:${escapeHtmlAttr(darkMix)};border-left-color:var(--nd-bq-border-light);background-color:var(--nd-bq-bg-light)"`;
+    inlineStyle = ` class="${cls} nd-blockquote-auto" style="--nd-bq-border-light:${lightColor};--nd-bq-border-dark:${darkColor};--nd-bq-bg-light:${lightMix};--nd-bq-bg-dark:${darkMix};border-left-color:var(--nd-bq-border-light);background-color:var(--nd-bq-bg-light)"`;
 
     // Update icon and title styles for auto theme
     if (materialIcon) {
       headerHtml = headerHtml.replace(
         '<span class="material-icons nd-blockquote-icon"',
-        `<span class="material-icons nd-blockquote-icon nd-blockquote-icon-auto" style="--nd-icon-light:${escapeHtmlAttr(node.color)};--nd-icon-dark:${escapeHtmlAttr(node.colorDark)};color:var(--nd-icon-light)"`
+        `<span class="material-icons nd-blockquote-icon nd-blockquote-icon-auto" style="--nd-icon-light:${lightColor};--nd-icon-dark:${darkColor};color:var(--nd-icon-light)"`
       );
     }
     if (node.title) {
       headerHtml = headerHtml.replace(
         '<span class="nd-blockquote-title"',
-        `<span class="nd-blockquote-title nd-blockquote-title-auto" style="--nd-title-light:${escapeHtmlAttr(node.color)};--nd-title-dark:${escapeHtmlAttr(node.colorDark)};color:var(--nd-title-light)"`
+        `<span class="nd-blockquote-title nd-blockquote-title-auto" style="--nd-title-light:${lightColor};--nd-title-dark:${darkColor};color:var(--nd-title-light)"`
       );
     }
 

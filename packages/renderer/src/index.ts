@@ -18,4 +18,4 @@ export function notedownToHtml(input: string, options?: RenderOptions): string {
 }
 
 export { renderDocument, resolveMetaRefs };
-export { getNotedownStyles, getNotedownStyleTag } from "./styles";
+export { getNotedownStyles, getNotedownStyleTag } from "./styles/index";
