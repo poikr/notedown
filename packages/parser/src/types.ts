@@ -126,6 +126,8 @@ export interface ColorNode {
   type: "color";
   foreground: string | null;
   background: string | null;
+  foregroundDark: string | null;
+  backgroundDark: string | null;
   children: InlineNode[];
 }
 

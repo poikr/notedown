@@ -404,6 +404,14 @@ details p,
   border: 1px solid #d0d7de;
   border-radius: 6px;
 }
+
+/* Notedown Color auto theme support */
+@media (prefers-color-scheme: dark) {
+  .nd-color-auto {
+    color: var(--nd-color-dark) !important;
+    background-color: var(--nd-bg-dark) !important;
+  }
+}
 `.trim();
 }
 

@@ -301,8 +301,9 @@ function tryParseColor(text: string, pos: number): {
 
   const inner = text.slice(pos + 1, closePos);
 
-  // Check for escaped tag: \f# or \b#
-  if (inner.startsWith("\\f#") || inner.startsWith("\\b#")) return null;
+  // Check for escaped tag: \f# or \b# or \F# or \B#
+  if (inner.startsWith("\\f#") || inner.startsWith("\\b#") ||
+      inner.startsWith("\\F#") || inner.startsWith("\\B#")) return null;
 
   // Parse the comma-separated segments
   const segments = inner.split(",");
@@ -310,13 +311,21 @@ function tryParseColor(text: string, pos: number): {
 
   let foreground: string | null = null;
   let background: string | null = null;
+  let foregroundDark: string | null = null;
+  let backgroundDark: string | null = null;
   let textStartIndex = 0;
 
   for (let i = 0; i < segments.length; i++) {
     const seg = segments[i].trim();
 
-    if (seg.startsWith("f#")) {
+    if (seg.startsWith("F#")) {
+      foregroundDark = normalizeColor(seg.slice(2));
+      textStartIndex = i + 1;
+    } else if (seg.startsWith("f#")) {
       foreground = normalizeColor(seg.slice(2));
+      textStartIndex = i + 1;
+    } else if (seg.startsWith("B#")) {
+      backgroundDark = normalizeColor(seg.slice(2));
       textStartIndex = i + 1;
     } else if (seg.startsWith("b#")) {
       background = normalizeColor(seg.slice(2));
@@ -330,7 +339,8 @@ function tryParseColor(text: string, pos: number): {
     }
   }
 
-  if (foreground === null && background === null) return null;
+  if (foreground === null && background === null &&
+      foregroundDark === null && backgroundDark === null) return null;
 
   const textContent = segments.slice(textStartIndex).join(",");
   if (textContent.length === 0) return null;
@@ -342,6 +352,8 @@ function tryParseColor(text: string, pos: number): {
       type: "color",
       foreground,
       background,
+      foregroundDark,
+      backgroundDark,
       children,
     },
     nextPos: closePos + 1,
