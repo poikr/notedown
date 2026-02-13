@@ -63,6 +63,29 @@ notedownToHtml('>info,c#blue,C#cyan> Notice', { theme: 'auto' });
 // Output uses CSS custom properties that automatically switch
 ```
 
+### Iframe Code Blocks
+
+The renderer supports interactive iframe code blocks with customizable dimensions and resizability:
+
+```typescript
+// Basic iframe
+notedownToHtml('```iframe\n<h1>Hello</h1>\n```');
+
+// Iframe with custom width and height
+notedownToHtml('```iframe,w#500px,h#300px,r#b\n<h1>Resizable</h1>\n```');
+```
+
+**Iframe Properties:**
+- `w#` - Width (default: `100%`)
+- `h#` - Height (default: `400px`)
+- `r#` - Resize mode:
+  - `r#w` - Width only (horizontal resize)
+  - `r#h` - Height only (vertical resize)
+  - `r#b` - Both directions (default)
+  - `r#n` - Not resizable
+
+**Security:** Iframe content is sandboxed with `allow-scripts` permission. Users must click "Trust & Run Code" to execute the content.
+
 ## Test Apps
 
 To see the theme switching in action, run the test applications:

@@ -17,8 +17,33 @@ def hello_world():
 
 iframe을 언어로 지정하면 HTML iframe 코드 블록을 생성할 수 있습니다.
 iframe 코드블록 내부의 내용은 HTML로 해석됩니다.
-예시:
+
+기본 예시:
 ```iframe
 <div style="background: red;">안녕하세요</div>
 <button onclick="alert('Hello!')">클릭하세요</button>
+```
+
+iframe 속성 지정:
+iframe 코드 블록에는 다음과 같은 속성을 지정할 수 있습니다:
+- w# : width (너비) 지정 (예: w#300px, w#100%)
+- h# : height (높이) 지정 (예: h#400px, h#50vh)
+- r# : resize (크기 조절) 설정
+  - r#w : width만 조절 가능
+  - r#h : height만 조절 가능
+  - r#b : 양방향(both) 조절 가능
+  - r#n : 조절 불가(none)
+
+예시:
+```iframe,w#500px,h#300px,r#b
+<h1>크기 조절 가능한 iframe</h1>
+<p>이 iframe은 500px 너비, 300px 높이로 시작하며, 양방향으로 크기 조절이 가능합니다.</p>
+```
+
+```iframe,w#100%,r#n
+<div>크기 조절이 불가능한 전체 너비 iframe</div>
+```
+
+```iframe,h#200px,r#h
+<div>세로 크기만 조절 가능한 iframe</div>
 ```

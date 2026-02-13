@@ -13,6 +13,18 @@ export function renderCodeBlock(node: CodeBlockNode): string {
     const tEncoded = new TextEncoder().encode(node.content);
     const base64Content = btoa(String.fromCharCode(...tEncoded));
 
+    // Build iframe style attributes
+    const iframeWidth = node.iframeWidth || "100%";
+    const iframeHeight = node.iframeHeight || "400px";
+    const resizable = node.iframeResizable || "both";
+
+    // Determine resize CSS value
+    let resizeCss = "both";
+    if (resizable === "none") resizeCss = "none";
+    else if (resizable === "width") resizeCss = "horizontal";
+    else if (resizable === "height") resizeCss = "vertical";
+    else if (resizable === "both") resizeCss = "both";
+
     return `<div class="nd-iframe-trust" id="${iframeId}-wrapper">` +
       `<div class="nd-iframe-trust-preview"><pre><code>${previewContent}</code></pre></div>` +
       `<div class="nd-iframe-trust-overlay">` +
@@ -39,6 +51,9 @@ export function renderCodeBlock(node: CodeBlockNode): string {
       `iframe.setAttribute('srcdoc', new TextDecoder().decode(Uint8Array.from(atob('${base64Content}'), c => c.charCodeAt(0))));` +
       `iframe.setAttribute('sandbox','allow-scripts');` +
       `iframe.className='nd-iframe';` +
+      `iframe.style.width='${escapeHtmlAttr(iframeWidth)}';` +
+      `iframe.style.height='${escapeHtmlAttr(iframeHeight)}';` +
+      `iframe.style.resize='${resizeCss}';` +
       `w.parentNode.replaceChild(iframe,w);` +
       `})()">Trust &amp; Run Code</button>` +
       `</div>` +

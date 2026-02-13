@@ -203,8 +203,39 @@ function parseCodeBlock(lines: string[], startIndex: number, lineNumber: number)
   nextIndex: number;
 } {
   const openLine = lines[startIndex];
-  const langMatch = openLine.match(/^```(\w*)$/);
-  const language = langMatch ? langMatch[1] : "";
+  const fullLangLine = openLine.slice(3); // Remove ```
+
+  // Parse language and options: iframe,w#300px,h#100%,r#w
+  const segments = fullLangLine.split(",").map(s => s.trim());
+  const language = segments[0] || "";
+
+  let iframeWidth: string | undefined;
+  let iframeHeight: string | undefined;
+  let iframeResizable: "none" | "width" | "height" | "both" | undefined;
+
+  const isIframe = language === "iframe";
+
+  if (isIframe && segments.length > 1) {
+    for (let j = 1; j < segments.length; j++) {
+      const seg = segments[j];
+      if (seg.startsWith("w#")) {
+        iframeWidth = seg.slice(2);
+      } else if (seg.startsWith("h#")) {
+        iframeHeight = seg.slice(2);
+      } else if (seg.startsWith("r#")) {
+        const resizeValue = seg.slice(2);
+        if (resizeValue === "w") {
+          iframeResizable = "width";
+        } else if (resizeValue === "h") {
+          iframeResizable = "height";
+        } else if (resizeValue === "b") {
+          iframeResizable = "both";
+        } else if (resizeValue === "n") {
+          iframeResizable = "none";
+        }
+      }
+    }
+  }
 
   const contentLines: string[] = [];
   let i = startIndex + 1;
@@ -218,14 +249,22 @@ function parseCodeBlock(lines: string[], startIndex: number, lineNumber: number)
     i++;
   }
 
+  const node: CodeBlockNode = {
+    type: "codeBlock",
+    language,
+    content: contentLines.join("\n"),
+    isIframe,
+    line: lineNumber,
+  };
+
+  if (isIframe) {
+    if (iframeWidth !== undefined) node.iframeWidth = iframeWidth;
+    if (iframeHeight !== undefined) node.iframeHeight = iframeHeight;
+    if (iframeResizable !== undefined) node.iframeResizable = iframeResizable;
+  }
+
   return {
-    node: {
-      type: "codeBlock",
-      language,
-      content: contentLines.join("\n"),
-      isIframe: language === "iframe",
-      line: lineNumber,
-    },
+    node,
     nextIndex: i,
   };
 }

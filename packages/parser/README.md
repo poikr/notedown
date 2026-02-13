@@ -92,3 +92,60 @@ Blockquotes also support theme-aware colors using `c#` and `C#`:
 // With title and both colors
 >info,t#Notice,c#blue,C#cyan> Complete theme-aware callout
 ```
+
+### Code Blocks with Iframe
+
+Notedown supports HTML iframe code blocks with customizable properties.
+
+#### Basic Iframe
+
+```notedown
+\`\`\`iframe
+<h1>Hello World</h1>
+<button onclick="alert('Hi!')">Click me</button>
+\`\`\`
+```
+
+#### Iframe Properties
+
+You can customize iframe dimensions and resizability:
+
+- `w#` - Width (e.g., `w#300px`, `w#100%`, `w#50vw`)
+- `h#` - Height (e.g., `h#400px`, `h#100%`, `h#50vh`)
+- `r#` - Resize mode:
+  - `r#w` - Width only resizable (horizontal)
+  - `r#h` - Height only resizable (vertical)
+  - `r#b` - Both directions resizable
+  - `r#n` - Not resizable (none)
+
+**Examples:**
+
+```notedown
+// Iframe with custom width and height, resizable in both directions
+\`\`\`iframe,w#500px,h#300px,r#b
+<h1>Resizable Iframe</h1>
+<p>This iframe is 500px wide, 300px tall, and can be resized in both directions.</p>
+\`\`\`
+
+// Full width iframe, not resizable
+\`\`\`iframe,w#100%,r#n
+<div>Full width, fixed size iframe</div>
+\`\`\`
+
+// Custom height, vertically resizable
+\`\`\`iframe,h#200px,r#h
+<div>This iframe can only be resized vertically</div>
+\`\`\`
+
+// Only resize option (defaults to 100% width, 400px height)
+\`\`\`iframe,r#b
+<p>Default size, fully resizable</p>
+\`\`\`
+```
+
+**Default Values:**
+- Width: `100%` (if not specified)
+- Height: `400px` (if not specified)
+- Resize: `both` (if not specified)
+
+**Security Note:** Iframe content is sandboxed with `allow-scripts` permission only. Users must explicitly trust and run the code by clicking a button.

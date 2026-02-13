@@ -38,6 +38,9 @@ export interface CodeBlockNode {
   language: string;
   content: string;
   isIframe: boolean;
+  iframeWidth?: string;
+  iframeHeight?: string;
+  iframeResizable?: "none" | "width" | "height" | "both";
   line: number;
 }
 
