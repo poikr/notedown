@@ -1,5 +1,6 @@
 import { describe, it, expect } from "bun:test";
 import { parse } from "../src/index";
+import { assertParagraph } from "./test-helpers";
 
 describe("Paragraph Parser", () => {
   it("parses single paragraph", () => {
@@ -22,7 +23,7 @@ describe("Paragraph Parser", () => {
 
   it("adds line breaks between lines within paragraph", () => {
     const doc = parse("Line 1\nLine 2\nLine 3");
-    const para = doc.content[0] as any;
+    const para = assertParagraph(doc.content[0]);
     // Should have: text, lineBreak, text, lineBreak, text
     const textNodes = para.children.filter((n: any) => n.type === "text");
     const brNodes = para.children.filter((n: any) => n.type === "lineBreak");

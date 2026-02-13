@@ -11,7 +11,12 @@ export function renderCodeBlock(node: CodeBlockNode): string {
     const fullContent = escapeHtml(node.content);
     // base64로 인코딩 (모든 특수 문자 문제 해결)
     const tEncoded = new TextEncoder().encode(node.content);
-    const base64Content = btoa(String.fromCharCode(...tEncoded));
+    let binaryString = "";
+    const chunkSize = 8192;
+    for (let i = 0; i < tEncoded.length; i += chunkSize) {
+      binaryString += String.fromCharCode(...tEncoded.subarray(i, i + chunkSize));
+    }
+    const base64Content = btoa(binaryString);
 
     // Build iframe style attributes
     const iframeWidth = node.iframeWidth || "100%";
