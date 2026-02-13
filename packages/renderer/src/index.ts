@@ -13,6 +13,7 @@ export function render(doc: NotedownDocument, options?: RenderOptions): string {
 }
 
 export function notedownToHtml(input: string, options?: RenderOptions): string {
+  console.log("Parsing input...");
   const doc = parse(input);
   return render(doc, options);
 }
