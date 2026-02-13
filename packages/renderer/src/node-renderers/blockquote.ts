@@ -59,7 +59,7 @@ export function renderBlockquote(
     // For auto theme with both colors, use CSS custom properties
     const lightColor = node.color;
     const darkColor = node.colorDark;
-    const lightMix = `color-mix(in srgb, ${lightColor} 10%, white)`;
+    const lightMix = `color-mix(in srgb, ${lightColor} 10%, #f1f1f1)`;
     const darkMix = `color-mix(in srgb, ${darkColor} 10%, #1e1e1e)`;
 
     inlineStyle = ` class="${cls} nd-blockquote-auto" style="--nd-bq-border-light:${escapeHtmlAttr(lightColor)};--nd-bq-border-dark:${escapeHtmlAttr(darkColor)};--nd-bq-bg-light:${escapeHtmlAttr(lightMix)};--nd-bq-bg-dark:${escapeHtmlAttr(darkMix)};border-left-color:var(--nd-bq-border-light);background-color:var(--nd-bq-bg-light)"`;
