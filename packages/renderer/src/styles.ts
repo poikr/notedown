@@ -405,6 +405,89 @@ details p,
   border-radius: 6px;
 }
 
+/* Notedown iframe trust prompt */
+.nd-iframe-trust {
+  position: relative;
+  margin: 1em 0;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.nd-iframe-trust-preview {
+  padding: 0.8em 1em;
+  background-color: #f6f8fa;
+  max-height: 120px;
+  overflow: hidden;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.nd-iframe-trust-preview pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-size: 0.8em;
+  color: #656d76;
+  font-family: 'Fira Code', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+}
+
+.nd-iframe-trust-preview code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+
+.nd-iframe-trust-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5em 1em;
+  background-color: #fff;
+  border-top: 1px solid #d0d7de;
+  text-align: center;
+}
+
+.nd-iframe-trust-icon {
+  color: #656d76;
+  margin-bottom: 0.5em;
+}
+
+.nd-iframe-trust-msg {
+  margin: 0 0 1em 0;
+  font-size: 0.85em;
+  color: #656d76;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  max-width: 400px;
+  line-height: 1.4;
+}
+
+.nd-iframe-trust-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.5em 1.2em;
+  border: 1px solid #1f883d;
+  border-radius: 6px;
+  background-color: #1f883d;
+  color: #fff;
+  font-size: 0.85em;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.nd-iframe-trust-btn:hover {
+  background-color: #1a7f37;
+  border-color: #1a7f37;
+}
+
+.nd-iframe-trust-btn:active {
+  transform: scale(0.98);
+}
+
 /* Notedown Color auto theme support */
 @media (prefers-color-scheme: dark) {
   .nd-color-auto {
