@@ -10,12 +10,14 @@ import { renderColor } from "./node-renderers/color";
 import { renderImage } from "./node-renderers/image";
 import { renderLink } from "./node-renderers/link";
 import { renderLatex } from "./node-renderers/latex";
+import type { RenderOptions } from "./index";
 
-export function renderDocument(doc: NotedownDocument): string {
-  return doc.content.map(renderBlock).join("\n");
+export function renderDocument(doc: NotedownDocument, options?: RenderOptions): string {
+  const theme = options?.theme ?? "light";
+  return doc.content.map(node => renderBlock(node, theme)).join("\n");
 }
 
-export function renderBlock(node: BlockNode): string {
+export function renderBlock(node: BlockNode, theme: "light" | "dark" | "auto" = "light"): string {
   switch (node.type) {
     case "heading":
       return renderHeading(node, renderInlineChildren);
@@ -26,9 +28,9 @@ export function renderBlock(node: BlockNode): string {
     case "table":
       return renderTable(node, renderInlineChildren);
     case "blockquote":
-      return renderBlockquote(node, renderBlock, renderInlineChildren);
+      return renderBlockquote(node, (n) => renderBlock(n, theme), renderInlineChildren, theme);
     case "collapse":
-      return renderCollapse(node, renderBlock, renderInlineChildren);
+      return renderCollapse(node, (n) => renderBlock(n, theme), renderInlineChildren);
     case "error":
       return `<div class="nd-error" data-line="${node.line}">${escapeHtml(node.message)}</div>`;
   }

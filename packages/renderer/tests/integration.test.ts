@@ -61,4 +61,28 @@ Hidden **content**
     const html = notedownToHtml("");
     expect(html).toBe("");
   });
+
+  it("renders with dark theme", () => {
+    const input = `>info> Information
+This is content`;
+    const html = notedownToHtml(input, { theme: "dark" });
+    expect(html).toContain("<blockquote");
+    expect(html).toContain("nd-blockquote-info");
+  });
+
+  it("renders with light theme", () => {
+    const input = `>warning> Warning
+This is a warning`;
+    const html = notedownToHtml(input, { theme: "light" });
+    expect(html).toContain("<blockquote");
+    expect(html).toContain("nd-blockquote-warning");
+  });
+
+  it("renders with auto theme", () => {
+    const input = `>error> Error
+This is an error`;
+    const html = notedownToHtml(input, { theme: "auto" });
+    expect(html).toContain("<blockquote");
+    expect(html).toContain("nd-blockquote-error");
+  });
 });

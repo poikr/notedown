@@ -1,4 +1,5 @@
 import { Notedown } from "./Notedown";
+import { useState } from "react";
 
 const sampleDoc = `@meta title=Notedown Demo
 @meta author=Test User
@@ -45,10 +46,76 @@ Pythagorean theorem: $a^2 + b^2 = c^2$
 `;
 
 export function App() {
+  const [theme, setTheme] = useState<"light" | "dark" | "auto">("light");
+
+  const appBg = theme === "dark" ? "#0d1117" : theme === "auto" ? "#fff" : "#fff";
+  const appColor = theme === "dark" ? "#e6edf3" : "#1f2328";
+  const borderColor = theme === "dark" ? "#30363d" : "#333";
+
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: 20, fontFamily: "sans-serif" }}>
-      <h1 style={{ borderBottom: "2px solid #333", paddingBottom: 10 }}>Notedown React Test</h1>
-      <Notedown source={sampleDoc} />
+    <div style={{
+      minHeight: "100vh",
+      backgroundColor: appBg,
+      color: appColor,
+      transition: "background-color 0.3s, color 0.3s"
+    }}>
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: 20, fontFamily: "sans-serif" }}>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderBottom: `2px solid ${borderColor}`,
+          paddingBottom: 10,
+          marginBottom: 20
+        }}>
+          <h1 style={{ margin: 0 }}>Notedown React Test</h1>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button
+              onClick={() => setTheme("light")}
+              style={{
+                padding: "6px 12px",
+                border: theme === "light" ? "2px solid #218bff" : "1px solid #30363d",
+                borderRadius: 6,
+                background: theme === "light" ? "#ddf4ff" : "transparent",
+                color: theme === "light" ? "#218bff" : appColor,
+                cursor: "pointer",
+                fontWeight: theme === "light" ? 600 : 400,
+              }}
+            >
+              Light
+            </button>
+            <button
+              onClick={() => setTheme("dark")}
+              style={{
+                padding: "6px 12px",
+                border: theme === "dark" ? "2px solid #58a6ff" : "1px solid #30363d",
+                borderRadius: 6,
+                background: theme === "dark" ? "#1c2d41" : "transparent",
+                color: theme === "dark" ? "#58a6ff" : appColor,
+                cursor: "pointer",
+                fontWeight: theme === "dark" ? 600 : 400,
+              }}
+            >
+              Dark
+            </button>
+            <button
+              onClick={() => setTheme("auto")}
+              style={{
+                padding: "6px 12px",
+                border: theme === "auto" ? "2px solid #8250df" : "1px solid #30363d",
+                borderRadius: 6,
+                background: theme === "auto" ? "#fbefff" : "transparent",
+                color: theme === "auto" ? "#8250df" : appColor,
+                cursor: "pointer",
+                fontWeight: theme === "auto" ? 600 : 400,
+              }}
+            >
+              Auto
+            </button>
+          </div>
+        </div>
+        <Notedown source={sampleDoc} theme={theme} />
+      </div>
     </div>
   );
 }

@@ -9,6 +9,7 @@ export function renderBlockquote(
   node: BlockquoteNode,
   renderBlock: (node: BlockNode) => string,
   renderChildren: (nodes: InlineNode[]) => string,
+  theme: "light" | "dark" | "auto" = "light",
 ): string {
   const materialIcon = node.icon ? (ICON_MAP[node.icon] ?? node.icon) : null;
   const customColor = node.color;
@@ -28,7 +29,7 @@ export function renderBlockquote(
 
   const content = node.children.map(child => {
     if (child.type === "blockquote") {
-      return renderBlockquote(child as BlockquoteNode, renderBlock, renderChildren);
+      return renderBlockquote(child as BlockquoteNode, renderBlock, renderChildren, theme);
     }
     return renderBlock(child as BlockNode);
   }).join("\n");
@@ -39,9 +40,11 @@ export function renderBlockquote(
     : "nd-blockquote";
 
   // Build inline style for custom color
-  const inlineStyle = customColor
-    ? ` style="border-left-color:${escapeHtmlAttr(customColor)};background-color:color-mix(in srgb, ${escapeHtmlAttr(customColor)} 10%, white)"`
-    : "";
+  let inlineStyle = "";
+  if (customColor) {
+    const mixBase = theme === "dark" ? "#1e1e1e" : "white";
+    inlineStyle = ` style="border-left-color:${escapeHtmlAttr(customColor)};background-color:color-mix(in srgb, ${escapeHtmlAttr(customColor)} 10%, ${mixBase})"`;
+  }
 
   return `<blockquote class="${cls}"${inlineStyle}>${headerHtml}${content}</blockquote>`;
 }
