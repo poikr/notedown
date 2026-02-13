@@ -1,6 +1,6 @@
 {
   "name": "@notedown/renderer",
-  "version": "1.4.0",
+  "version": "1.4.2",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,7 +16,7 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@notedown/parser": "^1.4.0",
+    "@notedown/parser": "^1.4.2",
     "highlight.js": "^11.11.1",
     "katex": "^0.16.0"
   },

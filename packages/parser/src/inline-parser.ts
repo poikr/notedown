@@ -31,6 +31,9 @@ export function parseInline(text: string): InlineNode[] {
       if (escResult) {
         if (escResult.type === "literal") {
           textBuffer += escResult.value;
+        } else if (escResult.type === "lineBreak") {
+          flushText();
+          nodes.push({ type: "lineBreak" });
         }
         pos = escResult.nextPos;
         continue;

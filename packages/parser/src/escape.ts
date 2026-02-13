@@ -60,6 +60,11 @@ export function tryParseEscape(text: string, pos: number): EscapeResult | null {
     return { type: "literal", value: "!", nextPos: pos + 2 };
   }
 
+  // \n = line break
+  if (next === "n") {
+    return { type: "lineBreak", nextPos: pos + 2 };
+  }
+
   // Unknown escape: not recognized
   return null;
 }

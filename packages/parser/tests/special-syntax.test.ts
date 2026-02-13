@@ -30,4 +30,26 @@ describe("Special Syntax", () => {
     const text = para.children.map((n: any) => n.type === "text" ? n.value : "").join("");
     expect(text).toContain("\\");
   });
+
+  it("handles inline \\n as line break escape", () => {
+    const doc = parse("Hello\\nWorld");
+    const para = assertParagraph(doc.content[0]);
+    expect(para.children).toEqual([
+      { type: "text", value: "Hello" },
+      { type: "lineBreak" },
+      { type: "text", value: "World" },
+    ]);
+  });
+
+  it("handles \\n\\n\\n as 3 line break escapes in a single line", () => {
+    const doc = parse("A\\n\\n\\nB");
+    const para = assertParagraph(doc.content[0]);
+    expect(para.children).toEqual([
+      { type: "text", value: "A" },
+      { type: "lineBreak" },
+      { type: "lineBreak" },
+      { type: "lineBreak" },
+      { type: "text", value: "B" },
+    ]);
+  });
 });
