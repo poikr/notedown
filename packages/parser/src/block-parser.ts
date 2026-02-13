@@ -47,7 +47,7 @@ function parseBlocksInContext(
 
     // 1. Code block: starts with ```
     if (isCodeBlockStart(line)) {
-      const result = parseCodeBlock(lines, i);
+      const result = parseCodeBlock(lines, i, i + 1);
       nodes.push(result.node);
       i = result.nextIndex;
       continue;
@@ -55,7 +55,7 @@ function parseBlocksInContext(
 
     // 2. Collapse start: starts with |>
     if (isCollapseStart(line)) {
-      const result = parseCollapseBlock(lines, i);
+      const result = parseCollapseBlock(lines, i, i + 1);
       nodes.push(result.node);
       i = result.nextIndex;
       continue;
@@ -63,7 +63,7 @@ function parseBlocksInContext(
 
     // 3. Table: current line has pipes AND next line is a separator row
     if (isTableStart(lines, i)) {
-      const result = parseTableBlock(lines, i);
+      const result = parseTableBlock(lines, i, i + 1);
       nodes.push(result.node);
       i = result.nextIndex;
       continue;
@@ -71,7 +71,7 @@ function parseBlocksInContext(
 
     // 4. Blockquote: starts with >
     if (isBlockquoteLine(line)) {
-      const result = parseBlockquoteGroup(lines, i);
+      const result = parseBlockquoteGroup(lines, i, i + 1);
       nodes.push(...result.nodes);
       i = result.nextIndex;
       continue;
@@ -79,13 +79,13 @@ function parseBlocksInContext(
 
     // 5. Heading: starts with # followed by space
     if (isHeadingLine(line)) {
-      nodes.push(parseHeading(line));
+      nodes.push(parseHeading(line, i + 1));
       i++;
       continue;
     }
 
     // 6. Default: paragraph
-    const result = parseParagraph(lines, i, stopAtCollapse);
+    const result = parseParagraph(lines, i, stopAtCollapse, i + 1);
     nodes.push(...result.nodes);
     i = result.nextIndex;
   }
@@ -125,21 +125,22 @@ function isHeadingLine(line: string): boolean {
 // BLOCK PARSERS
 // ===========================================================================
 
-function parseHeading(line: string): HeadingNode {
+function parseHeading(line: string, lineNumber: number): HeadingNode {
   const match = line.match(/^(#{1,6})\s(.+)$/);
   if (!match) {
-    return { type: "heading", level: 1, children: [{ type: "text", value: line }] };
+    return { type: "heading", level: 1, children: [{ type: "text", value: line }], line: lineNumber };
   }
   const level = match[1].length as 1 | 2 | 3 | 4 | 5 | 6;
   const text = match[2];
   const children = parseInline(text);
-  return { type: "heading", level, children };
+  return { type: "heading", level, children, line: lineNumber };
 }
 
 function parseParagraph(
   lines: string[],
   startIndex: number,
   stopAtCollapse: boolean,
+  lineNumber: number,
 ): { nodes: BlockNode[]; nextIndex: number } {
   const paragraphLines: string[] = [];
   let i = startIndex;
@@ -191,13 +192,13 @@ function parseParagraph(
         children.push(...inlineNodes);
       }
     }
-    return { type: "paragraph" as const, children };
+    return { type: "paragraph" as const, children, line: lineNumber };
   });
 
   return { nodes, nextIndex: i };
 }
 
-function parseCodeBlock(lines: string[], startIndex: number): {
+function parseCodeBlock(lines: string[], startIndex: number, lineNumber: number): {
   node: CodeBlockNode;
   nextIndex: number;
 } {
@@ -223,6 +224,7 @@ function parseCodeBlock(lines: string[], startIndex: number): {
       language,
       content: contentLines.join("\n"),
       isIframe: language === "iframe",
+      line: lineNumber,
     },
     nextIndex: i,
   };

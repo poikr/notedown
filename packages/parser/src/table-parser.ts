@@ -1,7 +1,7 @@
 import type { TableNode, TableCellNode, TableAlignment } from "./types";
 import { parseInline } from "./inline-parser";
 
-export function parseTableBlock(lines: string[], startIndex: number): {
+export function parseTableBlock(lines: string[], startIndex: number, lineNumber: number): {
   node: TableNode;
   nextIndex: number;
 } {
@@ -39,6 +39,7 @@ export function parseTableBlock(lines: string[], startIndex: number): {
       })),
       alignments,
       rows,
+      line: lineNumber,
     },
     nextIndex: i,
   };

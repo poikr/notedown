@@ -22,7 +22,7 @@ export function setBlockParserForCollapse(
   _parseBlocksInContext = fn;
 }
 
-export function parseCollapseBlock(lines: string[], startIndex: number): {
+export function parseCollapseBlock(lines: string[], startIndex: number, lineNumber: number): {
   node: CollapseNode;
   nextIndex: number;
 } {
@@ -49,6 +49,7 @@ export function parseCollapseBlock(lines: string[], startIndex: number): {
         type: "collapse",
         title: closed.title,
         children: closed.children,
+        line: i + 1,
       });
       i++;
       continue;
@@ -78,6 +79,7 @@ export function parseCollapseBlock(lines: string[], startIndex: number): {
         currentFrame.children.push({
           type: "paragraph",
           children: parseInline(line),
+          line: i + 1,
         });
       }
       i++;
@@ -92,6 +94,7 @@ export function parseCollapseBlock(lines: string[], startIndex: number): {
       type: "collapse",
       title: unclosed.title,
       children: unclosed.children,
+      line: startIndex + 1,
     });
   }
 
@@ -100,6 +103,7 @@ export function parseCollapseBlock(lines: string[], startIndex: number): {
       type: "collapse",
       title: rootFrame.title,
       children: rootFrame.children,
+      line: lineNumber,
     },
     nextIndex: i,
   };
