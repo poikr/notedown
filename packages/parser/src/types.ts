@@ -24,11 +24,13 @@ export interface HeadingNode {
   type: "heading";
   level: 1 | 2 | 3 | 4 | 5 | 6;
   children: InlineNode[];
+  line: number;
 }
 
 export interface ParagraphNode {
   type: "paragraph";
   children: InlineNode[];
+  line: number;
 }
 
 export interface CodeBlockNode {
@@ -36,6 +38,7 @@ export interface CodeBlockNode {
   language: string;
   content: string;
   isIframe: boolean;
+  line: number;
 }
 
 export interface TableNode {
@@ -43,6 +46,7 @@ export interface TableNode {
   headers: TableCellNode[];
   alignments: TableAlignment[];
   rows: TableCellNode[][];
+  line: number;
 }
 
 export type TableAlignment = "left" | "center" | "right";
@@ -59,12 +63,14 @@ export interface BlockquoteNode {
   color: string | null;
   colorDark: string | null;
   children: (BlockNode | BlockquoteNode)[];
+  line: number;
 }
 
 export interface CollapseNode {
   type: "collapse";
   title: InlineNode[] | null;
   children: BlockNode[];
+  line: number;
 }
 
 export interface ErrorNode {

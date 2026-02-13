@@ -112,7 +112,7 @@ function parseQuotePrefix(line: string): ParsedQuoteLine | null {
   return { levels, content, originalLineIndex: -1 };
 }
 
-export function parseBlockquoteGroup(lines: string[], startIndex: number): {
+export function parseBlockquoteGroup(lines: string[], startIndex: number, lineNumber: number): {
   nodes: BlockNode[];
   nextIndex: number;
 } {
@@ -159,6 +159,7 @@ export function parseBlockquoteGroup(lines: string[], startIndex: number): {
     const innerParagraph: ParagraphNode = {
       type: "paragraph",
       children: innerContent,
+      line: pl.originalLineIndex + 1,
     };
 
     // Create nested blockquotes from deepest to shallowest
@@ -169,6 +170,7 @@ export function parseBlockquoteGroup(lines: string[], startIndex: number): {
       color: pl.levels[level - 1].color,
       colorDark: pl.levels[level - 1].colorDark,
       children: [innerParagraph],
+      line: pl.originalLineIndex + 1,
     };
 
     for (let lvl = level - 2; lvl >= 0; lvl--) {
@@ -179,6 +181,7 @@ export function parseBlockquoteGroup(lines: string[], startIndex: number): {
         color: pl.levels[lvl].color,
         colorDark: pl.levels[lvl].colorDark,
         children: [current],
+        line: pl.originalLineIndex + 1,
       };
     }
 
