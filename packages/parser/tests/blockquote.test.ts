@@ -152,4 +152,48 @@ describe("Blockquote Parser", () => {
     const bq = doc.content[0] as any;
     expect(bq.color).toBe("#ff6600");
   });
+
+  it("parses C# dark mode color", () => {
+    const doc = parse(">info,C##ff9900> dark mode text");
+    const bq = doc.content[0] as any;
+    expect(bq.icon).toBe("info");
+    expect(bq.color).toBeNull();
+    expect(bq.colorDark).toBe("#ff9900");
+  });
+
+  it("parses both c# and C# colors", () => {
+    const doc = parse(">warning,c#yellow,C#orange> theme-aware text");
+    const bq = doc.content[0] as any;
+    expect(bq.icon).toBe("warning");
+    expect(bq.color).toBe("yellow");
+    expect(bq.colorDark).toBe("orange");
+  });
+
+  it("parses title with both colors", () => {
+    const doc = parse(">error,t#Error,c#red,C#pink> theme-aware error");
+    const bq = doc.content[0] as any;
+    expect(bq.icon).toBe("error");
+    expect(bq.title).toBe("Error");
+    expect(bq.color).toBe("red");
+    expect(bq.colorDark).toBe("pink");
+  });
+
+  it("basic blockquote has null colorDark", () => {
+    const doc = parse("> simple quote");
+    const bq = doc.content[0] as any;
+    expect(bq.colorDark).toBeNull();
+  });
+
+  it("merges blockquotes with same colors including dark", () => {
+    const doc = parse(">info,c#blue,C#cyan> Line 1\n>info,c#blue,C#cyan> Line 2");
+    const bq = doc.content[0] as any;
+    expect(bq.color).toBe("blue");
+    expect(bq.colorDark).toBe("cyan");
+    expect(bq.children.length).toBe(2);
+  });
+
+  it("does not merge blockquotes with different dark colors", () => {
+    const doc = parse(">info,C#blue> text\n>info,C#red> text");
+    expect(doc.content.length).toBe(2);
+  });
 });

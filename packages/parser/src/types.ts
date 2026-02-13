@@ -57,6 +57,7 @@ export interface BlockquoteNode {
   icon: string | null;
   title: string | null;
   color: string | null;
+  colorDark: string | null;
   children: (BlockNode | BlockquoteNode)[];
 }
 

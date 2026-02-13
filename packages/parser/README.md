@@ -69,3 +69,26 @@ Use backslash to escape color tags:
 \|f#red,This is not colored\|
 |\f#red,This is also not colored|
 ```
+
+### Blockquote/Callout Colors
+
+Blockquotes also support theme-aware colors using `c#` and `C#`:
+
+- `c#` - Color for light mode (or all modes if C# is not specified)
+- `C#` - Color for dark mode (or all modes if c# is not specified)
+
+**Examples:**
+
+```notedown
+// Only light mode color - same in both themes
+>info,c#blue> Information in blue
+
+// Only dark mode color - same in both themes
+>warning,C#orange> Warning in orange
+
+// Different colors for light and dark modes
+>error,c#red,C#pink> Red in light mode, pink in dark mode
+
+// With title and both colors
+>info,t#Notice,c#blue,C#cyan> Complete theme-aware callout
+```

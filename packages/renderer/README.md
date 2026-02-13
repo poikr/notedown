@@ -45,6 +45,24 @@ notedownToHtml('|f#000,F#FFF,Theme text|', { theme: 'auto' });
 // Output uses CSS custom properties that automatically switch based on prefers-color-scheme
 ```
 
+### Theme-Aware Blockquote/Callout Colors
+
+Blockquotes (callouts) also support theme-aware colors using `c#` and `C#`:
+
+```typescript
+// Light theme - uses c# color
+notedownToHtml('>info,c#blue,C#cyan> Notice', { theme: 'light' });
+// Output: blockquote with blue border and background
+
+// Dark theme - uses C# color
+notedownToHtml('>info,c#blue,C#cyan> Notice', { theme: 'dark' });
+// Output: blockquote with cyan border and background
+
+// Auto theme - uses CSS variables for both
+notedownToHtml('>info,c#blue,C#cyan> Notice', { theme: 'auto' });
+// Output uses CSS custom properties that automatically switch
+```
+
 ## Test Apps
 
 To see the theme switching in action, run the test applications:

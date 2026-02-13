@@ -6,6 +6,7 @@ interface QuoteLevelInfo {
   icon: string | null;
   title: string | null;
   color: string | null;
+  colorDark: string | null;
 }
 
 interface ParsedQuoteLine {
@@ -17,9 +18,10 @@ interface ParsedQuoteLine {
 function parseOptions(
   line: string,
   pos: number,
-): { title: string | null; color: string | null; pos: number } {
+): { title: string | null; color: string | null; colorDark: string | null; pos: number } {
   let title: string | null = null;
   let color: string | null = null;
+  let colorDark: string | null = null;
 
   while (pos < line.length && line[pos] === ",") {
     pos++; // skip comma
@@ -31,20 +33,22 @@ function parseOptions(
 
     if (segment.startsWith("t#")) {
       title = segment.slice(2) || null;
+    } else if (segment.startsWith("C#")) {
+      colorDark = segment.slice(2) || null;
     } else if (segment.startsWith("c#")) {
       color = segment.slice(2) || null;
     }
     // Unknown options silently ignored
   }
 
-  return { title, color, pos };
+  return { title, color, colorDark, pos };
 }
 
 function parseQuotePrefix(line: string): ParsedQuoteLine | null {
   if (line.length === 0 || line[0] !== ">") return null;
 
   let pos = 1; // past first >
-  const levels: QuoteLevelInfo[] = [{ icon: null, title: null, color: null }];
+  const levels: QuoteLevelInfo[] = [{ icon: null, title: null, color: null, colorDark: null }];
 
   while (pos <= line.length) {
     // Try to read icon name: sequence of alpha characters
@@ -57,11 +61,12 @@ function parseQuotePrefix(line: string): ParsedQuoteLine | null {
       // Found icon for current level
       levels[levels.length - 1].icon = line.slice(iconStart, pos);
 
-      // Parse comma-separated options (t#..., c#...)
+      // Parse comma-separated options (t#..., c#..., C#...)
       if (line[pos] === ",") {
         const opts = parseOptions(line, pos);
         levels[levels.length - 1].title = opts.title;
         levels[levels.length - 1].color = opts.color;
+        levels[levels.length - 1].colorDark = opts.colorDark;
         pos = opts.pos;
       }
 
@@ -71,11 +76,11 @@ function parseQuotePrefix(line: string): ParsedQuoteLine | null {
         // Check what comes next
         if (pos < line.length && /[a-zA-Z]/.test(line[pos])) {
           // Another icon starts immediately = next level
-          levels.push({ icon: null, title: null, color: null });
+          levels.push({ icon: null, title: null, color: null, colorDark: null });
           continue;
         } else if (pos < line.length && line[pos] === ">") {
           // Bare > = next level with no icon
-          levels.push({ icon: null, title: null, color: null });
+          levels.push({ icon: null, title: null, color: null, colorDark: null });
           pos++;
           continue;
         } else {
@@ -93,7 +98,7 @@ function parseQuotePrefix(line: string): ParsedQuoteLine | null {
 
       if (pos < line.length && line[pos] === ">") {
         // Bare > = next level
-        levels.push({ icon: null, title: null, color: null });
+        levels.push({ icon: null, title: null, color: null, colorDark: null });
         pos++;
         continue;
       } else {
@@ -162,6 +167,7 @@ export function parseBlockquoteGroup(lines: string[], startIndex: number): {
       icon: pl.levels[level - 1].icon,
       title: pl.levels[level - 1].title,
       color: pl.levels[level - 1].color,
+      colorDark: pl.levels[level - 1].colorDark,
       children: [innerParagraph],
     };
 
@@ -171,6 +177,7 @@ export function parseBlockquoteGroup(lines: string[], startIndex: number): {
         icon: pl.levels[lvl].icon,
         title: pl.levels[lvl].title,
         color: pl.levels[lvl].color,
+        colorDark: pl.levels[lvl].colorDark,
         children: [current],
       };
     }
@@ -185,7 +192,7 @@ export function parseBlockquoteGroup(lines: string[], startIndex: number): {
 }
 
 function blockquoteMatches(a: BlockquoteNode, b: BlockquoteNode): boolean {
-  return a.icon === b.icon && a.title === b.title && a.color === b.color;
+  return a.icon === b.icon && a.title === b.title && a.color === b.color && a.colorDark === b.colorDark;
 }
 
 function mergeBlockquotes(nodes: BlockNode[]): BlockNode[] {
