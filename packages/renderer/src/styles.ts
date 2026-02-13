@@ -1,13 +1,60 @@
-export function getNotedownStyles(): string {
+export function getNotedownStyles(theme: "light" | "dark" | "auto" = "light"): string {
+  const isDark = theme === "dark";
+  const isAuto = theme === "auto";
+
+  // Light theme colors
+  const lightColors = {
+    blockquoteBg: '#f6f8fa',
+    blockquoteBorder: '#d0d7de',
+    blockquoteText: '#1f2328',
+    inlineCodeBg: '#eff1f3',
+    // Theme-specific callout colors (light mode)
+    infoBg: '#ddf4ff',
+    infoColor: '#218bff',
+    warningBg: '#fff8c5',
+    warningColor: '#d4a72c',
+    errorBg: '#ffebe9',
+    errorColor: '#cf222e',
+    questionBg: '#fbefff',
+    questionColor: '#8250df',
+  };
+
+  // Dark theme colors
+  const darkColors = {
+    blockquoteBg: '#161b22',
+    blockquoteBorder: '#30363d',
+    blockquoteText: '#e6edf3',
+    inlineCodeBg: '#2d333b',
+    // Theme-specific callout colors (dark mode)
+    infoBg: '#1c2d41',
+    infoColor: '#58a6ff',
+    warningBg: '#3d3416',
+    warningColor: '#f0c355',
+    errorBg: '#3d1319',
+    errorColor: '#ff7b72',
+    questionBg: '#2d2440',
+    questionColor: '#bc8cff',
+  };
+
+  const colors = isDark ? darkColors : lightColors;
+
   return `
 /* Notedown Blockquote */
 .nd-blockquote {
   margin: 1em 0;
   padding: 0.75em 1em;
-  border-left: 4px solid #d0d7de;
-  background-color: #f6f8fa;
-  color: #1f2328;
-}
+  border-left: 4px solid ${colors.blockquoteBorder};
+  background-color: ${colors.blockquoteBg};
+  color: ${colors.blockquoteText};
+}${isAuto ? `
+
+@media (prefers-color-scheme: dark) {
+  .nd-blockquote {
+    border-left-color: ${darkColors.blockquoteBorder};
+    background-color: ${darkColors.blockquoteBg};
+    color: ${darkColors.blockquoteText};
+  }
+}` : ''}
 
 .nd-blockquote .nd-blockquote {
   margin: 0.5em 0;
@@ -27,47 +74,85 @@ export function getNotedownStyles(): string {
 
 /* Info */
 .nd-blockquote-info {
-  border-left-color: #218bff;
-  background-color: #ddf4ff;
+  border-left-color: ${colors.infoColor};
+  background-color: ${colors.infoBg};
 }
 
 .nd-blockquote-info > .nd-blockquote-icon,
 .nd-blockquote-info > .nd-blockquote-title {
-  color: #218bff;
+  color: ${colors.infoColor};
 }
 
 /* Warning */
 .nd-blockquote-warning {
-  border-left-color: #d4a72c;
-  background-color: #fff8c5;
+  border-left-color: ${colors.warningColor};
+  background-color: ${colors.warningBg};
 }
 
 .nd-blockquote-warning > .nd-blockquote-icon,
 .nd-blockquote-warning > .nd-blockquote-title {
-  color: #d4a72c;
+  color: ${colors.warningColor};
 }
 
 /* Error */
 .nd-blockquote-error {
-  border-left-color: #cf222e;
-  background-color: #ffebe9;
+  border-left-color: ${colors.errorColor};
+  background-color: ${colors.errorBg};
 }
 
 .nd-blockquote-error > .nd-blockquote-icon,
 .nd-blockquote-error > .nd-blockquote-title {
-  color: #cf222e;
+  color: ${colors.errorColor};
 }
 
 /* Question */
 .nd-blockquote-question {
-  border-left-color: #8250df;
-  background-color: #fbefff;
+  border-left-color: ${colors.questionColor};
+  background-color: ${colors.questionBg};
 }
 
 .nd-blockquote-question > .nd-blockquote-icon,
 .nd-blockquote-question > .nd-blockquote-title {
-  color: #8250df;
-}
+  color: ${colors.questionColor};
+}${isAuto ? `
+
+@media (prefers-color-scheme: dark) {
+  .nd-blockquote-info {
+    border-left-color: ${darkColors.infoColor};
+    background-color: ${darkColors.infoBg};
+  }
+  .nd-blockquote-info > .nd-blockquote-icon,
+  .nd-blockquote-info > .nd-blockquote-title {
+    color: ${darkColors.infoColor};
+  }
+
+  .nd-blockquote-warning {
+    border-left-color: ${darkColors.warningColor};
+    background-color: ${darkColors.warningBg};
+  }
+  .nd-blockquote-warning > .nd-blockquote-icon,
+  .nd-blockquote-warning > .nd-blockquote-title {
+    color: ${darkColors.warningColor};
+  }
+
+  .nd-blockquote-error {
+    border-left-color: ${darkColors.errorColor};
+    background-color: ${darkColors.errorBg};
+  }
+  .nd-blockquote-error > .nd-blockquote-icon,
+  .nd-blockquote-error > .nd-blockquote-title {
+    color: ${darkColors.errorColor};
+  }
+
+  .nd-blockquote-question {
+    border-left-color: ${darkColors.questionColor};
+    background-color: ${darkColors.questionBg};
+  }
+  .nd-blockquote-question > .nd-blockquote-icon,
+  .nd-blockquote-question > .nd-blockquote-title {
+    color: ${darkColors.questionColor};
+  }
+}` : ''}
 
 /* Notedown Code Block */
 .nd-codeblock {
@@ -195,12 +280,18 @@ export function getNotedownStyles(): string {
 
 /* Notedown Inline Code */
 code {
-  background-color: #eff1f3;
+  background-color: ${colors.inlineCodeBg};
   padding: 0.15em 0.4em;
   border-radius: 6px;
   font-size: 0.9em;
   font-family: 'Fira Code', 'JetBrains Mono', Consolas, 'Courier New', monospace;
-}
+}${isAuto ? `
+
+@media (prefers-color-scheme: dark) {
+  code {
+    background-color: ${darkColors.inlineCodeBg};
+  }
+}` : ''}
 
 .nd-codeblock code {
   background-color: transparent;
@@ -310,6 +401,6 @@ details p {
 `.trim();
 }
 
-export function getNotedownStyleTag(): string {
-  return `<style>${getNotedownStyles()}</style>`;
+export function getNotedownStyleTag(theme: "light" | "dark" | "auto" = "light"): string {
+  return `<style>${getNotedownStyles(theme)}</style>`;
 }

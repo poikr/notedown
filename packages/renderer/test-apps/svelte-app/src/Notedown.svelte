@@ -1,17 +1,18 @@
 <script lang="ts">
-  import { notedownToHtml, getNotedownStyles } from "@notedown/renderer";
+  import { notedownToHtml, getNotedownStyles, type RenderOptions } from "@notedown/renderer";
 
-  let { source, className = "" }: { source: string; className?: string } = $props();
+  let { source, className = "", theme = "light" }: { source: string; className?: string; theme?: "light" | "dark" | "auto" } = $props();
 
-  let html = $derived(notedownToHtml(source));
+  let html = $derived(notedownToHtml(source, { theme }));
 
-  let stylesInjected = false;
+  let styleElement: HTMLStyleElement | null = null;
   $effect(() => {
-    if (stylesInjected) return;
-    stylesInjected = true;
-    const style = document.createElement("style");
-    style.textContent = getNotedownStyles();
-    document.head.appendChild(style);
+    if (!styleElement) {
+      styleElement = document.createElement("style");
+      styleElement.id = "notedown-styles";
+      document.head.appendChild(styleElement);
+    }
+    styleElement.textContent = getNotedownStyles(theme);
   });
 </script>
 
