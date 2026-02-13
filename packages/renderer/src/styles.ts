@@ -279,7 +279,8 @@ export function getNotedownStyles(theme: "light" | "dark" | "auto" = "light"): s
 }
 
 /* Notedown Inline Code */
-code {
+code,
+.nd-inline-code {
   background-color: ${colors.inlineCodeBg};
   padding: 0.15em 0.4em;
   border-radius: 6px;
@@ -288,7 +289,8 @@ code {
 }${isAuto ? `
 
 @media (prefers-color-scheme: dark) {
-  code {
+  code,
+  .nd-inline-code {
     background-color: ${darkColors.inlineCodeBg};
   }
 }` : ''}
@@ -375,11 +377,13 @@ code {
 }
 
 /* Notedown Collapse */
-details {
+details,
+.nd-details {
   margin: 0.5em 0;
 }
 
-details summary {
+details summary,
+.nd-summary {
   cursor: pointer;
   font-weight: 600;
   padding: 0.3em 0;
@@ -387,7 +391,9 @@ details summary {
 
 /* Notedown Table */
 .nd-blockquote p,
-details p {
+.nd-blockquote .nd-p,
+details p,
+.nd-details .nd-p {
   margin: 0.3em 0;
 }
 

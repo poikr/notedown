@@ -5,5 +5,5 @@ export function renderLink(
   node: LinkNode,
   renderChildren: (nodes: InlineNode[]) => string,
 ): string {
-  return `<a href="${escapeHtmlAttr(node.url)}">${renderChildren(node.children)}</a>`;
+  return `<a class="nd-link" href="${escapeHtmlAttr(node.url)}">${renderChildren(node.children)}</a>`;
 }

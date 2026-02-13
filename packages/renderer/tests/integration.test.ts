@@ -37,24 +37,24 @@ Hidden **content**
     const html = notedownToHtml(input);
 
     // Check key elements
-    expect(html).toContain("<h1>Demo</h1>");
-    expect(html).toContain("<strong>Test</strong>");
-    expect(html).toContain("<em>paragraph</em>");
-    expect(html).toContain("<u>underline</u>");
-    expect(html).toContain("<del>strike</del>");
+    expect(html).toContain(">Demo</h1>");
+    expect(html).toContain(">Test</strong>");
+    expect(html).toContain(">paragraph</em>");
+    expect(html).toContain(">underline</u>");
+    expect(html).toContain(">strike</del>");
     expect(html).toContain('style="color:red"');
     expect(html).toContain('language-javascript');
-    expect(html).toContain("<table>");
+    expect(html).toContain("<table");
     expect(html).toContain("<blockquote");
-    expect(html).toContain("<details>");
-    expect(html).toContain('<img src="./logo.png"');
-    expect(html).toContain('<a href="https://example.com">');
+    expect(html).toContain("<details");
+    expect(html).toContain('src="./logo.png"');
+    expect(html).toContain('href="https://example.com"');
   });
 
   it("render() accepts parsed document", () => {
     const doc = parse("@meta title=Hi\n\n# @{title}");
     const html = render(doc);
-    expect(html).toContain("<h1>Hi</h1>");
+    expect(html).toContain(">Hi</h1>");
   });
 
   it("handles empty document", () => {

@@ -4,55 +4,64 @@ import { notedownToHtml, getNotedownStyles, getNotedownStyleTag } from "../src/i
 describe("HTML Output", () => {
   describe("Heading", () => {
     it("renders h1-h6", () => {
-      expect(notedownToHtml("# Hello")).toBe("<h1>Hello</h1>");
-      expect(notedownToHtml("## Hello")).toBe("<h2>Hello</h2>");
-      expect(notedownToHtml("### Hello")).toBe("<h3>Hello</h3>");
-      expect(notedownToHtml("#### Hello")).toBe("<h4>Hello</h4>");
-      expect(notedownToHtml("##### Hello")).toBe("<h5>Hello</h5>");
-      expect(notedownToHtml("###### Hello")).toBe("<h6>Hello</h6>");
+      expect(notedownToHtml("# Hello")).toContain(">Hello</h1>");
+      expect(notedownToHtml("## Hello")).toContain(">Hello</h2>");
+      expect(notedownToHtml("### Hello")).toContain(">Hello</h3>");
+      expect(notedownToHtml("#### Hello")).toContain(">Hello</h4>");
+      expect(notedownToHtml("##### Hello")).toContain(">Hello</h5>");
+      expect(notedownToHtml("###### Hello")).toContain(">Hello</h6>");
     });
   });
 
   describe("Paragraph", () => {
     it("renders paragraph with text", () => {
-      expect(notedownToHtml("Hello World")).toBe("<p>Hello World</p>");
+      expect(notedownToHtml("Hello World")).toContain(">Hello World</p>");
     });
 
     it("renders multiple paragraphs", () => {
       const html = notedownToHtml("Para 1\n\nPara 2");
-      expect(html).toContain("<p>Para 1</p>");
-      expect(html).toContain("<p>Para 2</p>");
+      expect(html).toContain(">Para 1</p>");
+      expect(html).toContain(">Para 2</p>");
     });
 
     it("renders line breaks within paragraph", () => {
       const html = notedownToHtml("Line 1\nLine 2");
-      expect(html).toBe("<p>Line 1<br>Line 2</p>");
+      expect(html).toContain("Line 1<br");
+      expect(html).toContain(">Line 2</p>");
     });
   });
 
   describe("Text Decoration", () => {
     it("renders bold", () => {
-      expect(notedownToHtml("**bold**")).toBe("<p><strong>bold</strong></p>");
+      expect(notedownToHtml("**bold**")).toContain("<strong");
+      expect(notedownToHtml("**bold**")).toContain(">bold</strong>");
     });
 
     it("renders italic", () => {
-      expect(notedownToHtml("*italic*")).toBe("<p><em>italic</em></p>");
+      expect(notedownToHtml("*italic*")).toContain("<em");
+      expect(notedownToHtml("*italic*")).toContain(">italic</em>");
     });
 
     it("renders underline", () => {
-      expect(notedownToHtml("__underline__")).toBe("<p><u>underline</u></p>");
+      expect(notedownToHtml("__underline__")).toContain("<u");
+      expect(notedownToHtml("__underline__")).toContain(">underline</u>");
     });
 
     it("renders strikethrough", () => {
-      expect(notedownToHtml("~~strike~~")).toBe("<p><del>strike</del></p>");
+      expect(notedownToHtml("~~strike~~")).toContain("<del");
+      expect(notedownToHtml("~~strike~~")).toContain(">strike</del>");
     });
 
     it("renders bold+italic", () => {
-      expect(notedownToHtml("***both***")).toBe("<p><strong><em>both</em></strong></p>");
+      const html = notedownToHtml("***both***");
+      expect(html).toContain("<strong");
+      expect(html).toContain("<em");
+      expect(html).toContain(">both</em>");
     });
 
     it("renders inline code", () => {
-      expect(notedownToHtml("`code`")).toBe("<p><code>code</code></p>");
+      expect(notedownToHtml("`code`")).toContain("<code");
+      expect(notedownToHtml("`code`")).toContain(">code</code>");
     });
 
     it("renders latex with KaTeX", () => {
@@ -84,13 +93,15 @@ describe("HTML Output", () => {
   describe("Link", () => {
     it("renders link", () => {
       const html = notedownToHtml("[Google](https://google.com)");
-      expect(html).toContain('<a href="https://google.com">Google</a>');
+      expect(html).toContain('href="https://google.com"');
+      expect(html).toContain(">Google</a>");
     });
 
     it("renders link with bold text", () => {
       const html = notedownToHtml("[**Bold**](https://example.com)");
-      expect(html).toContain("<strong>Bold</strong>");
-      expect(html).toContain('<a href="https://example.com">');
+      expect(html).toContain("<strong");
+      expect(html).toContain(">Bold</strong>");
+      expect(html).toContain('href="https://example.com"');
     });
   });
 
@@ -114,8 +125,8 @@ describe("HTML Output", () => {
 
     it("renders linked image", () => {
       const html = notedownToHtml("[![alt](./img.png)](https://example.com)");
-      expect(html).toContain('<a href="https://example.com">');
-      expect(html).toContain("<img ");
+      expect(html).toContain('href="https://example.com"');
+      expect(html).toContain("<img");
     });
   });
 
@@ -170,10 +181,10 @@ describe("HTML Output", () => {
   describe("Table", () => {
     it("renders basic table", () => {
       const html = notedownToHtml("| H1 | H2 |\n|---|---|\n| D1 | D2 |");
-      expect(html).toContain("<table>");
+      expect(html).toContain("<table");
       expect(html).toContain("<thead>");
-      expect(html).toContain("<th>H1</th>");
-      expect(html).toContain("<td>D1</td>");
+      expect(html).toContain(">H1</th>");
+      expect(html).toContain(">D1</td>");
     });
 
     it("renders table with alignment", () => {
@@ -235,8 +246,9 @@ describe("HTML Output", () => {
   describe("Collapse", () => {
     it("renders collapse with title", () => {
       const html = notedownToHtml("|> Title\nContent\n/>");
-      expect(html).toContain("<details>");
-      expect(html).toContain("<summary>Title</summary>");
+      expect(html).toContain("<details");
+      expect(html).toContain("<summary");
+      expect(html).toContain(">Title</summary>");
       expect(html).toContain("Content");
     });
   });
@@ -244,7 +256,7 @@ describe("HTML Output", () => {
   describe("Meta Resolution", () => {
     it("resolves meta references", () => {
       const html = notedownToHtml("@meta title=Hello\n\n# @{title}");
-      expect(html).toContain("<h1>Hello</h1>");
+      expect(html).toContain(">Hello</h1>");
     });
 
     it("preserves unresolved meta references", () => {

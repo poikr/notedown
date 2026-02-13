@@ -7,5 +7,5 @@ export function renderColor(
   const styles: string[] = [];
   if (node.foreground) styles.push(`color:${node.foreground}`);
   if (node.background) styles.push(`background-color:${node.background}`);
-  return `<span style="${styles.join(";")}">${renderChildren(node.children)}</span>`;
+  return `<span class="nd-color" style="${styles.join(";")}">${renderChildren(node.children)}</span>`;
 }
