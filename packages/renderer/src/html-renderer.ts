@@ -45,17 +45,17 @@ export function renderInline(node: InlineNode): string {
     case "text":
       return escapeHtml(node.value);
     case "bold":
-      return `<strong>${renderInlineChildren(node.children)}</strong>`;
+      return `<strong class="nd-bold">${renderInlineChildren(node.children)}</strong>`;
     case "italic":
-      return `<em>${renderInlineChildren(node.children)}</em>`;
+      return `<em class="nd-italic">${renderInlineChildren(node.children)}</em>`;
     case "boldItalic":
-      return `<strong><em>${renderInlineChildren(node.children)}</em></strong>`;
+      return `<strong class="nd-bold"><em class="nd-italic">${renderInlineChildren(node.children)}</em></strong>`;
     case "underline":
-      return `<u>${renderInlineChildren(node.children)}</u>`;
+      return `<u class="nd-underline">${renderInlineChildren(node.children)}</u>`;
     case "strikethrough":
-      return `<del>${renderInlineChildren(node.children)}</del>`;
+      return `<del class="nd-strikethrough">${renderInlineChildren(node.children)}</del>`;
     case "inlineCode":
-      return `<code>${escapeHtml(node.value)}</code>`;
+      return `<code class="nd-inline-code">${escapeHtml(node.value)}</code>`;
     case "latex":
       return renderLatex(node);
     case "color":
@@ -67,6 +67,6 @@ export function renderInline(node: InlineNode): string {
     case "metaRef":
       return `<span class="nd-meta-ref" data-key="${escapeHtmlAttr(node.key)}">@{${escapeHtml(node.key)}}</span>`;
     case "lineBreak":
-      return "<br>";
+      return '<br class="nd-br">';
   }
 }

@@ -8,9 +8,9 @@ export function renderCollapse(
   const summaryContent = node.title
     ? renderChildren(node.title)
     : "";
-  const summary = `<summary>${summaryContent}</summary>`;
+  const summary = `<summary class="nd-summary">${summaryContent}</summary>`;
 
   const content = node.children.map(renderBlock).join("\n");
 
-  return `<details>\n${summary}\n${content}\n</details>`;
+  return `<details class="nd-details">\n${summary}\n${content}\n</details>`;
 }

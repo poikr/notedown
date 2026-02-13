@@ -5,5 +5,5 @@ export function renderHeading(
   renderChildren: (nodes: InlineNode[]) => string,
 ): string {
   const tag = `h${node.level}`;
-  return `<${tag}>${renderChildren(node.children)}</${tag}>`;
+  return `<${tag} class="nd-h${node.level}">${renderChildren(node.children)}</${tag}>`;
 }

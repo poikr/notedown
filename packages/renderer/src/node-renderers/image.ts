@@ -3,6 +3,7 @@ import { escapeHtmlAttr } from "../sanitize";
 
 export function renderImage(node: ImageNode): string {
   const attrs: string[] = [
+    'class="nd-img"',
     `src="${escapeHtmlAttr(node.url)}"`,
     `alt="${escapeHtmlAttr(node.alt)}"`,
   ];
@@ -24,7 +25,7 @@ export function renderImage(node: ImageNode): string {
   const img = `<img ${attrs.join(" ")}>`;
 
   if (node.link) {
-    return `<a href="${escapeHtmlAttr(node.link)}">${img}</a>`;
+    return `<a class="nd-img-link" href="${escapeHtmlAttr(node.link)}">${img}</a>`;
   }
   return img;
 }

@@ -20,7 +20,7 @@ export function renderTable(
   }).join("\n");
 
   return [
-    "<table>",
+    '<table class="nd-table">',
     "<thead>",
     `<tr>${headerCells}</tr>`,
     "</thead>",

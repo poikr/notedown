@@ -4,5 +4,5 @@ export function renderParagraph(
   node: ParagraphNode,
   renderChildren: (nodes: InlineNode[]) => string,
 ): string {
-  return `<p>${renderChildren(node.children)}</p>`;
+  return `<p class="nd-p">${renderChildren(node.children)}</p>`;
 }
