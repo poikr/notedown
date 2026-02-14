@@ -246,6 +246,56 @@ describe("HTML Output", () => {
     });
   });
 
+  describe("List", () => {
+    it("renders unordered list with dash", () => {
+      const html = notedownToHtml("- Item 1\n- Item 2");
+      expect(html).toContain("<ul");
+      expect(html).toContain("nd-ul");
+      expect(html).toContain("<li");
+      expect(html).toContain("nd-li");
+      expect(html).toContain("Item 1");
+      expect(html).toContain("Item 2");
+    });
+
+    it("renders unordered list with asterisk", () => {
+      const html = notedownToHtml("* Item 1\n* Item 2");
+      expect(html).toContain("<ul");
+      expect(html).toContain("nd-ul");
+    });
+
+    it("renders ordered list", () => {
+      const html = notedownToHtml("1. First\n2. Second");
+      expect(html).toContain("<ol");
+      expect(html).toContain("nd-ol");
+      expect(html).toContain("First");
+      expect(html).toContain("Second");
+    });
+
+    it("renders ordered list with custom start number", () => {
+      const html = notedownToHtml("3. Third\n4. Fourth");
+      expect(html).toContain('start="3"');
+    });
+
+    it("renders nested list", () => {
+      const html = notedownToHtml("- Parent\n  - Child");
+      expect(html).toContain("<ul");
+      expect(html).toContain("Parent");
+      expect(html).toContain("Child");
+    });
+
+    it("renders inline formatting in list items", () => {
+      const html = notedownToHtml("- **Bold** item");
+      expect(html).toContain("<strong");
+      expect(html).toContain(">Bold</strong>");
+    });
+
+    it("renders mixed list types as separate lists", () => {
+      const html = notedownToHtml("- Unordered\n1. Ordered");
+      expect(html).toContain("<ul");
+      expect(html).toContain("<ol");
+    });
+  });
+
   describe("Collapse", () => {
     it("renders collapse with title", () => {
       const html = notedownToHtml("|> Title\nContent\n/>");
@@ -305,6 +355,13 @@ describe("HTML Output", () => {
       expect(css).toContain(".hljs-comment");
       expect(css).toContain(".hljs-number");
       expect(css).toContain(".hljs-title");
+    });
+
+    it("getNotedownStyles returns CSS with list rules", () => {
+      const css = getNotedownStyles();
+      expect(css).toContain(".nd-ul");
+      expect(css).toContain(".nd-ol");
+      expect(css).toContain(".nd-li");
     });
 
     it("getNotedownStyleTag wraps CSS in style tag", () => {

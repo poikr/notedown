@@ -40,6 +40,15 @@ function resolveBlockNode(node: BlockNode, meta: Record<string, string>): BlockN
         title: node.title ? resolveInlineNodes(node.title, meta) : null,
         children: node.children.map(child => resolveBlockNode(child, meta)),
       };
+    case "list":
+      return {
+        ...node,
+        items: node.items.map(item => ({
+          ...item,
+          children: resolveInlineNodes(item.children, meta),
+          sublists: item.sublists.map(sl => resolveBlockNode(sl, meta) as typeof sl),
+        })),
+      };
     case "codeBlock":
     case "error":
       return node;

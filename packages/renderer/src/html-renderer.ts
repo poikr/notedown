@@ -6,6 +6,7 @@ import { renderCodeBlock } from "./node-renderers/code-block";
 import { renderTable } from "./node-renderers/table";
 import { renderBlockquote } from "./node-renderers/blockquote";
 import { renderCollapse } from "./node-renderers/collapse";
+import { renderList } from "./node-renderers/list";
 import { renderColor } from "./node-renderers/color";
 import { renderImage } from "./node-renderers/image";
 import { renderLink } from "./node-renderers/link";
@@ -33,6 +34,8 @@ export function renderBlock(node: BlockNode, theme: "light" | "dark" | "auto" = 
       return renderBlockquote(node, (n) => renderBlock(n, theme), renderInlineChildrenWithTheme, theme);
     case "collapse":
       return renderCollapse(node, (n) => renderBlock(n, theme), renderInlineChildrenWithTheme);
+    case "list":
+      return renderList(node, renderInlineChildrenWithTheme);
     case "error":
       return `<div class="nd-error" data-line="${node.line}">${escapeHtml(node.message)}</div>`;
   }

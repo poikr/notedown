@@ -6,6 +6,7 @@ import type {
   TableNode,
   BlockquoteNode,
   CollapseNode,
+  ListNode,
   ErrorNode,
 } from "../src/types";
 
@@ -36,6 +37,11 @@ export function assertBlockquote(node: BlockNode): BlockquoteNode {
 
 export function assertCollapse(node: BlockNode): CollapseNode {
   if (node.type !== "collapse") throw new Error(`Expected collapse, got ${node.type}`);
+  return node;
+}
+
+export function assertList(node: BlockNode): ListNode {
+  if (node.type !== "list") throw new Error(`Expected list, got ${node.type}`);
   return node;
 }
 

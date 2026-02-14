@@ -5,6 +5,7 @@ import { getBaseStyles } from "./base";
 import { getIframeStyles } from "./iframe";
 import { getSyntaxHighlightStyles } from "./syntax-highlight";
 import { getAutoThemeStyles } from "./auto-theme";
+import { getListStyles } from "./list";
 
 export function getNotedownStyles(theme: "light" | "dark" | "auto" = "light"): string {
   const isDark = theme === "dark";
@@ -18,6 +19,7 @@ export function getNotedownStyles(theme: "light" | "dark" | "auto" = "light"): s
     getIframeStyles(isDark, isAuto),
     getSyntaxHighlightStyles(),
     getAutoThemeStyles(),
+    getListStyles(),
   ].join("\n").trim();
 }
 

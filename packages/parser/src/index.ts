@@ -27,6 +27,8 @@ export type {
   TableCellNode,
   BlockquoteNode,
   CollapseNode,
+  ListNode,
+  ListItemNode,
   ErrorNode,
   InlineNode,
   TextNode,

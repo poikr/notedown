@@ -13,6 +13,7 @@ import {
   isCollapseStart,
   isCollapseEnd,
 } from "./collapse-parser";
+import { parseListBlock, isListLine } from "./list-parser";
 
 export function parseBlocks(lines: string[]): BlockNode[] {
   const result = parseBlocksInContext(lines, 0, false);
@@ -73,7 +74,15 @@ function parseBlocksInContext(
       continue;
     }
 
-    // 5. Heading: starts with # followed by space
+    // 5. List: starts with -, *, or number followed by .
+    if (isListLine(line)) {
+      const result = parseListBlock(lines, i, i + 1);
+      nodes.push(...result.nodes);
+      i = result.nextIndex;
+      continue;
+    }
+
+    // 6. Heading: starts with # followed by space
     if (isHeadingLine(line)) {
       nodes.push(parseHeading(line, i + 1));
       i++;
@@ -149,6 +158,7 @@ function parseParagraph(
     if (stopAtCollapse && isCollapseEnd(line)) break;
     if (isTableStart(lines, i)) break;
     if (isBlockquoteLine(line)) break;
+    if (isListLine(line)) break;
     if (isHeadingLine(line)) break;
     paragraphLines.push(line);
     i++;

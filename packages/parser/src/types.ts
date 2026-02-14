@@ -18,6 +18,7 @@ export type BlockNode =
   | TableNode
   | BlockquoteNode
   | CollapseNode
+  | ListNode
   | ErrorNode;
 
 export interface HeadingNode {
@@ -74,6 +75,20 @@ export interface CollapseNode {
   title: InlineNode[] | null;
   children: BlockNode[];
   line: number;
+}
+
+export interface ListNode {
+  type: "list";
+  ordered: boolean;
+  startNumber: number;
+  items: ListItemNode[];
+  line: number;
+}
+
+export interface ListItemNode {
+  type: "listItem";
+  children: InlineNode[];
+  sublists: ListNode[];
 }
 
 export interface ErrorNode {
