@@ -126,6 +126,7 @@ export function parseVideo(text: string, pos: number): {
 function parseVideoAttributes(altRaw: string): {
   width: string | null;
   height: string | null;
+  aspectRatio: string | null;
   alignment: "left" | "center" | "right" | null;
   youtube: boolean;
   alt: string;
