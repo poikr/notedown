@@ -7,7 +7,6 @@ export function getBaseStyles(
 ): string {
   return `
 /* Notedown Inline Code */
-code,
 .nd-inline-code {
   background-color: ${colors.inlineCodeBg};
   padding: 0.15em 0.4em;
@@ -17,7 +16,6 @@ code,
 }${isAuto ? `
 
 @media (prefers-color-scheme: dark) {
-  code,
   .nd-inline-code {
     background-color: ${darkColors.inlineCodeBg};
   }
