@@ -28,6 +28,7 @@ iframe 속성 지정:
 iframe 코드 블록에는 다음과 같은 속성을 지정할 수 있습니다:
 - w# : width (너비) 지정 (예: w#300px, w#100%)
 - h# : height (높이) 지정 (예: h#400px, h#50vh)
+- p# : aspect-ratio (종횡비) 지정 (예: p#16/9, p#4/3)
 - r# : resize (크기 조절) 설정
   - r#w : width만 조절 가능
   - r#h : height만 조절 가능
@@ -46,4 +47,12 @@ iframe 코드 블록에는 다음과 같은 속성을 지정할 수 있습니다
 
 ```iframe,h#200px,r#h
 <div>세로 크기만 조절 가능한 iframe</div>
+```
+
+```iframe,w#100%,p#16/9
+<div>16:9 종횡비의 전체 너비 iframe</div>
+```
+
+```iframe,w#800px,p#4/3,r#n
+<div>4:3 종횡비, 크기 조절 불가</div>
 ```

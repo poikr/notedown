@@ -36,14 +36,22 @@ w#을 사용하여 너비를 지정하고, h#을 사용하여 높이를 지정�
 ![w#150px,h#150px,정사각형 이미지](./square-image.jpg)
 ![w#45%,비율 지정 이미지](./responsive-image.jpg)
 
-5. 이미지 정렬
+5. 종횡비 (aspect-ratio)
+
+이미지의 종횡비를 지정하기 위해 alt 텍스트 부분에 p#를 사용할 수 있습니다. 값은 CSS aspect-ratio 형식(너비/높이)으로 작성합니다.
+예시:
+![p#16/9,와이드 이미지](./wide-image.jpg)
+![p#1/1,정사각형 이미지](./square-image.jpg)
+![p#4/3,w#100%,반응형 이미지](./responsive-image.jpg)
+
+6. 이미지 정렬
 이미지 정렬을 위해 alt 텍스트 부분에 a#를 사용할 수 있습니다.
 예시:
 ![a#left,왼쪽 정렬 이미지](./left-image.jpg)
 ![a#center,가운데 정렬 이미지](./center-image.jpg)
 ![a#right,오른쪽 정렬 이미지](./right-image.jpg)
 
-6. 복합 속성
+7. 복합 속성
 이미지에 여러 속성을 동시에 적용할 수 있습니다. 속성들은 쉼표(,)로 구분합니다.
 예시:
 ![w#200px,a#center,가운데 정렬된 이미지](./centered-image.jpg)

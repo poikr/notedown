@@ -29,7 +29,15 @@ w#을 사용하여 너비를 지정하고, h#을 사용하여 높이를 지정�
 @[w#640px,h#360px,HD 비디오](./hd-video.mp4)
 @[w#100%,전체 너비 비디오](./fullwidth-video.mp4)
 
-4. 비디오 정렬
+4. 종횡비 (aspect-ratio)
+
+비디오의 종횡비를 지정하기 위해 alt 텍스트 부분에 p#를 사용할 수 있습니다. 값은 CSS aspect-ratio 형식(너비/높이)으로 작성합니다.
+예시:
+@[p#16/9,w#100%,와이드 영상](./wide-video.mp4)
+@[p#9/16,w#300px,세로 영상](./vertical-video.mp4)
+@[p#4/3,클래식 비율 영상](./classic-video.mp4)
+
+5. 비디오 정렬
 
 비디오 정렬을 위해 alt 텍스트 부분에 a#를 사용할 수 있습니다.
 예시:
@@ -37,7 +45,7 @@ w#을 사용하여 너비를 지정하고, h#을 사용하여 높이를 지정�
 @[a#center,가운데 정렬 비디오](./center-video.mp4)
 @[a#right,오른쪽 정렬 비디오](./right-video.mp4)
 
-5. 복합 속성
+6. 복합 속성
 
 비디오에 여러 속성을 동시에 적용할 수 있습니다. 속성들은 쉼표(,)로 구분합니다.
 예시:
@@ -45,7 +53,7 @@ w#을 사용하여 너비를 지정하고, h#을 사용하여 높이를 지정�
 @[w#640px,h#360px,a#center,튜토리얼 영상](./tutorial.mp4)
 @[w#50%,a#right,오른쪽 정렬된 반응형 비디오](./right-responsive-video.mp4)
 
-6. YouTube 임베드
+7. YouTube 임베드
 
 y#true를 사용하면 비디오를 YouTube iframe 임베드로 렌더링합니다. URL은 YouTube embed URL을 사용해야 합니다.
 예시:
