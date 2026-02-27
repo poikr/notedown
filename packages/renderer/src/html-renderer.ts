@@ -9,6 +9,7 @@ import { renderCollapse } from "./node-renderers/collapse";
 import { renderList } from "./node-renderers/list";
 import { renderColor } from "./node-renderers/color";
 import { renderImage } from "./node-renderers/image";
+import { renderVideo } from "./node-renderers/video";
 import { renderLink } from "./node-renderers/link";
 import { renderLatex } from "./node-renderers/latex";
 import type { RenderOptions } from "./index";
@@ -71,6 +72,8 @@ export function renderInline(node: InlineNode, theme: "light" | "dark" | "auto" 
       return renderLink(node, renderChildrenWithTheme);
     case "image":
       return renderImage(node);
+    case "video":
+      return renderVideo(node);
     case "metaRef":
       return `<span class="nd-meta-ref" data-key="${escapeHtmlAttr(node.key)}">@{${escapeHtml(node.key)}}</span>`;
     case "lineBreak":

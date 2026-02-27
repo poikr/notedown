@@ -1,4 +1,4 @@
-import type { ImageNode } from "./types";
+import type { ImageNode, VideoNode } from "./types";
 
 export interface LinkParseResult {
   url: string;
@@ -42,7 +42,7 @@ export function parseImage(text: string, pos: number): {
   const altRaw = text.slice(pos + 2, closeBracket);
   const url = text.slice(closeBracket + 2, closeParen);
 
-  const { width, height, alignment, alt } = parseImageAttributes(altRaw);
+  const { width, height, alignment, alt } = parseMediaAttributes(altRaw);
 
   return {
     node: {
@@ -88,7 +88,62 @@ export function parseLinkedImage(text: string, pos: number): {
   };
 }
 
-function parseImageAttributes(altRaw: string): {
+export function parseVideo(text: string, pos: number): {
+  node: VideoNode;
+  nextPos: number;
+} | null {
+  if (text[pos] !== "@" || text[pos + 1] !== "[") return null;
+
+  const closeBracket = findMatchingBracket(text, pos + 1, "[", "]");
+  if (closeBracket === -1) return null;
+
+  if (closeBracket + 1 >= text.length || text[closeBracket + 1] !== "(") return null;
+
+  const closeParen = findMatchingBracket(text, closeBracket + 1, "(", ")");
+  if (closeParen === -1) return null;
+
+  const altRaw = text.slice(pos + 2, closeBracket);
+  const url = text.slice(closeBracket + 2, closeParen);
+
+  const { width, height, alignment, youtube, alt } = parseVideoAttributes(altRaw);
+
+  return {
+    node: {
+      type: "video",
+      url,
+      alt,
+      width,
+      height,
+      alignment,
+      youtube,
+    },
+    nextPos: closeParen + 1,
+  };
+}
+
+function parseVideoAttributes(altRaw: string): {
+  width: string | null;
+  height: string | null;
+  alignment: "left" | "center" | "right" | null;
+  youtube: boolean;
+  alt: string;
+} {
+  const base = parseMediaAttributes(altRaw);
+  let youtube = false;
+  const altParts: string[] = [];
+
+  for (const seg of base.alt.split(",").map(s => s.trim())) {
+    if (seg === "y#true") {
+      youtube = true;
+    } else {
+      altParts.push(seg);
+    }
+  }
+
+  return { ...base, youtube, alt: altParts.join(",") };
+}
+
+function parseMediaAttributes(altRaw: string): {
   width: string | null;
   height: string | null;
   alignment: "left" | "center" | "right" | null;

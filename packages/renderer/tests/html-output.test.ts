@@ -130,6 +130,56 @@ describe("HTML Output", () => {
     });
   });
 
+  describe("Video", () => {
+    it("renders basic video", () => {
+      const html = notedownToHtml("@[alt](./video.mp4)");
+      expect(html).toContain('src="./video.mp4"');
+      expect(html).toContain("controls");
+      expect(html).toContain(">alt</video>");
+    });
+
+    it("renders video with width", () => {
+      const html = notedownToHtml("@[w#500px,alt](./video.mp4)");
+      expect(html).toContain('width="500px"');
+    });
+
+    it("renders video with height", () => {
+      const html = notedownToHtml("@[h#300px,alt](./video.mp4)");
+      expect(html).toContain('height="300px"');
+    });
+
+    it("renders video with alignment", () => {
+      const html = notedownToHtml("@[a#center,alt](./video.mp4)");
+      expect(html).toContain("margin-left:auto");
+      expect(html).toContain("margin-right:auto");
+    });
+
+    it("renders video with nd-video class", () => {
+      const html = notedownToHtml("@[alt](./video.mp4)");
+      expect(html).toContain('class="nd-video"');
+    });
+
+    it("renders youtube embed as iframe", () => {
+      const html = notedownToHtml("@[y#true](https://www.youtube.com/embed/abc123)");
+      expect(html).toContain("<iframe");
+      expect(html).toContain('src="https://www.youtube.com/embed/abc123"');
+      expect(html).toContain("nd-video-youtube");
+      expect(html).toContain("allowfullscreen");
+    });
+
+    it("renders youtube embed with dimensions", () => {
+      const html = notedownToHtml("@[y#true,w#560px,h#315px](https://www.youtube.com/embed/abc123)");
+      expect(html).toContain('width="560px"');
+      expect(html).toContain('height="315px"');
+      expect(html).toContain("<iframe");
+    });
+
+    it("renders youtube embed with title from alt", () => {
+      const html = notedownToHtml("@[y#true,My Video](https://www.youtube.com/embed/abc123)");
+      expect(html).toContain('title="My Video"');
+    });
+  });
+
   describe("Code Block", () => {
     it("renders code block with language", () => {
       const html = notedownToHtml("```python\nprint('hi')\n```");

@@ -45,6 +45,7 @@ export type {
   LatexNode,
   LinkNode,
   ImageNode,
+  VideoNode,
   MetaRefNode,
   LineBreakNode,
 } from "./types";

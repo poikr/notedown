@@ -114,6 +114,7 @@ export type InlineNode =
   | LatexNode
   | LinkNode
   | ImageNode
+  | VideoNode
   | MetaRefNode
   | LineBreakNode;
 
@@ -180,6 +181,16 @@ export interface ImageNode {
   height: string | null;
   alignment: "left" | "center" | "right" | null;
   link: string | null;
+}
+
+export interface VideoNode {
+  type: "video";
+  url: string;
+  alt: string;
+  width: string | null;
+  height: string | null;
+  alignment: "left" | "center" | "right" | null;
+  youtube: boolean;
 }
 
 export interface MetaRefNode {

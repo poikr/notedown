@@ -93,6 +93,66 @@ Blockquotes also support theme-aware colors using `c#` and `C#`:
 >info,t#Notice,c#blue,C#cyan> Complete theme-aware callout
 ```
 
+### Video
+
+Notedown supports embedding videos with the `@[alt](url)` syntax.
+
+#### Basic Video
+
+```notedown
+@[My video](https://example.com/video.mp4)
+```
+
+#### Video Properties
+
+You can customize video dimensions and alignment:
+
+- `w#` - Width (e.g., `w#500px`, `w#100%`)
+- `h#` - Height (e.g., `h#300px`, `h#50vh`)
+- `a#` - Alignment: `left`, `center`, `right`
+
+**Examples:**
+
+```notedown
+// Video with custom width
+@[w#500px,Demo video](./video.mp4)
+
+// Video with width and height
+@[w#640px,h#360px,Tutorial](./video.mp4)
+
+// Centered video with percentage width
+@[w#80%,a#center,Centered video](./video.mp4)
+
+// Right-aligned video
+@[a#right,Sidebar video](./video.mp4)
+
+// All options combined
+@[w#800px,h#450px,a#center,Full demo](./video.mp4)
+```
+
+The rendered `<video>` tag always includes the `controls` attribute. The alt text is used as the fallback content inside the `<video>` element.
+
+#### YouTube Embed
+
+Use `y#true` to embed a YouTube video as an `<iframe>`. The URL should be a YouTube embed URL.
+
+- `y#true` - Render as YouTube iframe embed instead of `<video>` tag
+
+**Examples:**
+
+```notedown
+// Basic YouTube embed
+@[y#true](https://www.youtube.com/embed/NRGuwOiixY4?si=5pq3TJyWrvSc324n)
+
+// YouTube embed with custom dimensions
+@[y#true,w#560px,h#315px](https://www.youtube.com/embed/NRGuwOiixY4)
+
+// Centered YouTube embed with title
+@[y#true,w#800px,h#450px,a#center,My Video Title](https://www.youtube.com/embed/NRGuwOiixY4)
+```
+
+The rendered `<iframe>` includes `allowfullscreen` and allows accelerometer, autoplay, clipboard-write, encrypted-media, gyroscope, and picture-in-picture. The alt text is used as the iframe `title` attribute.
+
 ### Code Blocks with Iframe
 
 Notedown supports HTML iframe code blocks with customizable properties.

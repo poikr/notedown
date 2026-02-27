@@ -10,6 +10,7 @@ import {
   parseLink as parseLinkRaw,
   parseImage,
   parseLinkedImage,
+  parseVideo,
 } from "./link-image-parser";
 
 export function parseInline(text: string): InlineNode[] {
@@ -129,6 +130,17 @@ export function parseInline(text: string): InlineNode[] {
           children: parseInline(textContent),
         });
         pos = nextPos;
+        continue;
+      }
+    }
+
+    // ----- VIDEO: @[alt](url) -----
+    if (text.startsWith("@[", pos)) {
+      const result = parseVideo(text, pos);
+      if (result) {
+        flushText();
+        nodes.push(result.node);
+        pos = result.nextPos;
         continue;
       }
     }
