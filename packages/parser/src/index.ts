@@ -2,6 +2,9 @@ import { parseMeta } from "./meta-parser";
 import { parseBlocks } from "./block-parser";
 import type { NotedownDocument } from "./types";
 
+export { getTextOnly } from "./text-only";
+export type { ITextOnlyOptions } from "./text-only";
+
 export function parse(input: string): NotedownDocument {
   const lines = input.split("\n");
 
