@@ -12,6 +12,7 @@ export function renderImage(node: ImageNode): string {
   if (node.height) attrs.push(`height="${escapeHtmlAttr(node.height)}"`);
 
   const styles: string[] = [];
+  if (node.aspectRatio) styles.push(`aspect-ratio:${escapeHtmlAttr(node.aspectRatio)}`);
   if (node.alignment === "center") {
     styles.push("display:block", "margin-left:auto", "margin-right:auto");
   } else if (node.alignment === "right") {

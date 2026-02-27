@@ -218,6 +218,7 @@ function parseCodeBlock(lines: string[], startIndex: number, lineNumber: number)
   let iframeWidth: string | undefined;
   let iframeHeight: string | undefined;
   let iframeResizable: "none" | "width" | "height" | "both" | undefined;
+  let iframeAspectRatio: string | undefined;
 
   const isIframe = language === "iframe";
 
@@ -228,6 +229,8 @@ function parseCodeBlock(lines: string[], startIndex: number, lineNumber: number)
         iframeWidth = seg.slice(2);
       } else if (seg.startsWith("h#")) {
         iframeHeight = seg.slice(2);
+      } else if (seg.startsWith("p#")) {
+        iframeAspectRatio = seg.slice(2);
       } else if (seg.startsWith("r#")) {
         const resizeValue = seg.slice(2);
         if (resizeValue === "w") {
@@ -267,6 +270,7 @@ function parseCodeBlock(lines: string[], startIndex: number, lineNumber: number)
     if (iframeWidth !== undefined) node.iframeWidth = iframeWidth;
     if (iframeHeight !== undefined) node.iframeHeight = iframeHeight;
     if (iframeResizable !== undefined) node.iframeResizable = iframeResizable;
+    if (iframeAspectRatio !== undefined) node.iframeAspectRatio = iframeAspectRatio;
   }
 
   return {

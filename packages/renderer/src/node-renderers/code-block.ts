@@ -59,6 +59,7 @@ export function renderCodeBlock(node: CodeBlockNode): string {
       `iframe.style.width='${escapeHtmlAttr(iframeWidth)}';` +
       `iframe.style.height='${escapeHtmlAttr(iframeHeight)}';` +
       `iframe.style.resize='${resizeCss}';` +
+      (node.iframeAspectRatio ? `iframe.style.aspectRatio='${escapeHtmlAttr(node.iframeAspectRatio)}';` : "") +
       `w.parentNode.replaceChild(iframe,w);` +
       `})()">Trust &amp; Run Code</button>` +
       `</div>` +

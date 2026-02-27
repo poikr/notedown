@@ -42,6 +42,7 @@ export interface CodeBlockNode {
   iframeWidth?: string;
   iframeHeight?: string;
   iframeResizable?: "none" | "width" | "height" | "both";
+  iframeAspectRatio?: string;
   line: number;
 }
 
@@ -179,6 +180,7 @@ export interface ImageNode {
   alt: string;
   width: string | null;
   height: string | null;
+  aspectRatio: string | null;
   alignment: "left" | "center" | "right" | null;
   link: string | null;
 }
@@ -189,6 +191,7 @@ export interface VideoNode {
   alt: string;
   width: string | null;
   height: string | null;
+  aspectRatio: string | null;
   alignment: "left" | "center" | "right" | null;
   youtube: boolean;
 }

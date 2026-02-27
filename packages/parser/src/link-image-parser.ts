@@ -42,7 +42,7 @@ export function parseImage(text: string, pos: number): {
   const altRaw = text.slice(pos + 2, closeBracket);
   const url = text.slice(closeBracket + 2, closeParen);
 
-  const { width, height, alignment, alt } = parseMediaAttributes(altRaw);
+  const { width, height, aspectRatio, alignment, alt } = parseMediaAttributes(altRaw);
 
   return {
     node: {
@@ -51,6 +51,7 @@ export function parseImage(text: string, pos: number): {
       alt,
       width,
       height,
+      aspectRatio,
       alignment,
       link: null,
     },
@@ -105,7 +106,7 @@ export function parseVideo(text: string, pos: number): {
   const altRaw = text.slice(pos + 2, closeBracket);
   const url = text.slice(closeBracket + 2, closeParen);
 
-  const { width, height, alignment, youtube, alt } = parseVideoAttributes(altRaw);
+  const { width, height, aspectRatio, alignment, youtube, alt } = parseVideoAttributes(altRaw);
 
   return {
     node: {
@@ -114,6 +115,7 @@ export function parseVideo(text: string, pos: number): {
       alt,
       width,
       height,
+      aspectRatio,
       alignment,
       youtube,
     },
@@ -146,12 +148,14 @@ function parseVideoAttributes(altRaw: string): {
 function parseMediaAttributes(altRaw: string): {
   width: string | null;
   height: string | null;
+  aspectRatio: string | null;
   alignment: "left" | "center" | "right" | null;
   alt: string;
 } {
   const segments = altRaw.split(",").map(s => s.trim());
   let width: string | null = null;
   let height: string | null = null;
+  let aspectRatio: string | null = null;
   let alignment: "left" | "center" | "right" | null = null;
   const altParts: string[] = [];
 
@@ -160,6 +164,8 @@ function parseMediaAttributes(altRaw: string): {
       width = seg.slice(2);
     } else if (seg.startsWith("h#")) {
       height = seg.slice(2);
+    } else if (seg.startsWith("p#")) {
+      aspectRatio = seg.slice(2);
     } else if (seg.startsWith("a#")) {
       const val = seg.slice(2);
       if (val === "left" || val === "center" || val === "right") {
@@ -170,7 +176,7 @@ function parseMediaAttributes(altRaw: string): {
     }
   }
 
-  return { width, height, alignment, alt: altParts.join(",") };
+  return { width, height, aspectRatio, alignment, alt: altParts.join(",") };
 }
 
 export function findMatchingBracket(
