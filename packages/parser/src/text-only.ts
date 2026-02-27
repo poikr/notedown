@@ -7,11 +7,13 @@ import type {
 
 export interface ITextOnlyOptions {
   image?: (alt: string) => string;
+  video?: (alt: string) => string;
   table?: (table: string[][]) => string;
 }
 
 const defaultOptions: Required<ITextOnlyOptions> = {
   image: (alt) => `[Image ${alt}]`,
+  video: (alt) => `[Video ${alt}]`,
   table: () => `[Table]`,
 };
 
@@ -110,6 +112,8 @@ function inlineToText(
       return node.value;
     case "image":
       return opts.image(node.alt);
+    case "video":
+      return opts.video(node.alt);
     case "metaRef":
       return `@{${node.key}}`;
     case "lineBreak":
