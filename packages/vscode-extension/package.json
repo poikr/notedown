@@ -1,9 +1,9 @@
 {
   "name": "notedown-vscode",
-  "displayName": "Notedown",
+  "displayName": "Notedown (.nd)",
   "description": "Syntax highlighting and live preview for Notedown",
   "version": "0.1.1",
-  "publisher": "poikr",
+  "publisher": "Oein",
   "private": true,
   "license": "ISC",
   "repository": {
