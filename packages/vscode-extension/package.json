@@ -1,0 +1,141 @@
+{
+  "name": "notedown-vscode",
+  "displayName": "Notedown",
+  "description": "Syntax highlighting and live preview for Notedown",
+  "version": "0.1.1",
+  "publisher": "poikr",
+  "private": true,
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poikr/notedown.git"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:notedown"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "notedown",
+        "aliases": [
+          "Notedown",
+          "notedown"
+        ],
+        "extensions": [
+          ".nd",
+          ".notedown"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "notedown",
+        "scopeName": "source.notedown",
+        "path": "./syntaxes/notedown.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.html": "html",
+          "meta.embedded.block.typescript": "typescript",
+          "meta.embedded.block.javascript": "javascript",
+          "meta.embedded.block.tsx": "typescriptreact",
+          "meta.embedded.block.jsx": "javascriptreact",
+          "meta.embedded.block.python": "python",
+          "meta.embedded.block.rust": "rust",
+          "meta.embedded.block.go": "go",
+          "meta.embedded.block.java": "java",
+          "meta.embedded.block.c": "c",
+          "meta.embedded.block.cpp": "cpp",
+          "meta.embedded.block.csharp": "csharp",
+          "meta.embedded.block.ruby": "ruby",
+          "meta.embedded.block.php": "php",
+          "meta.embedded.block.shellscript": "shellscript",
+          "meta.embedded.block.css": "css",
+          "meta.embedded.block.scss": "scss",
+          "meta.embedded.block.json": "json",
+          "meta.embedded.block.yaml": "yaml",
+          "meta.embedded.block.xml": "xml",
+          "meta.embedded.block.sql": "sql",
+          "meta.embedded.block.markdown": "markdown",
+          "meta.embedded.block.swift": "swift",
+          "meta.embedded.block.kotlin": "kotlin",
+          "meta.embedded.block.dart": "dart"
+        }
+      }
+    ],
+    "commands": [
+      {
+        "command": "notedown.showPreview",
+        "title": "Notedown: Open Preview",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "notedown.showPreviewToSide",
+        "title": "Notedown: Open Preview to the Side",
+        "icon": "$(open-preview)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "notedown.showPreviewToSide",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "editorLangId == notedown"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "editorLangId == notedown",
+          "command": "notedown.showPreviewToSide",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "notedown.showPreview",
+          "when": "editorLangId == notedown"
+        },
+        {
+          "command": "notedown.showPreviewToSide",
+          "when": "editorLangId == notedown"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Notedown",
+      "properties": {
+        "notedown.preview.theme": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "light",
+            "dark"
+          ],
+          "default": "auto",
+          "description": "Theme used by the Notedown preview."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "bun build ./src/extension.ts --outdir ./dist --target node --external vscode",
+    "typecheck": "tsc --noEmit",
+    "vscode:prepublish": "bun run build",
+    "package": "node scripts/package.mjs"
+  },
+  "devDependencies": {
+    "@notedown/parser": "workspace:*",
+    "@notedown/renderer": "workspace:*",
+    "@types/vscode": "^1.80.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0"
+  }
+}
